@@ -23,8 +23,7 @@
 +-------------------+----------------------------------------------------------+
 |        **v1.0.1** | 14-06-2014                                               |
 |                   |                                                          |
-|                   | Changed README to README.rst; copied README.rst and      |
-|                   | LICENSE to top-level directory (for github).             |
+|                   | Changed README to README.rst.                            |
 +-------------------+----------------------------------------------------------+
 
 .. _XnView: http://www.xnview.com
@@ -83,8 +82,6 @@ The LIBPNMIO distribution includes the following files.
 | VERSION               | Current version of the LIBPNMIO distribution.        |
 +-----------------------+------------------------------------------------------+
 | /lib                  | Compiled static library directory                    |
-+-----------------------+------------------------------------------------------+
-| libpnmio.a            | The library compiled for Windows 7, 64-bit.          |
 +-----------------------+------------------------------------------------------+
 | /src                  | Source code directory                                |
 +-----------------------+------------------------------------------------------+
@@ -282,9 +279,8 @@ This will produce the static library ``libpnmio.a`` and copy it to the
 reference applications will also be generated and copied to the ``/bin``
 subdirectory.
 
-
 5. Run tests
-============
+------------
 
 Two sample scripts are provided in the ``/test`` subdirectory. Change 
 directory to ``/test`` and run the scripts as follows:
@@ -308,3 +304,16 @@ viewers such as XnView_ and Imagine_.
   For this reason, MinGW (http://www.mingw.org) or Cygwin 
   (http://sources.redhat.com/cygwin) are suggested, since POSIX emulation 
   environments of sufficient completeness.
+  
+
+7. Contact
+==========
+
+You may contact me at:
+
+|  Nikolaos Kavvadias <nikos@nkavvadias.com>
+|  Independent Consultant
+|  http://www.nkavvadias.com
+|  Kornarou 12 Rd,
+|  35100 Lamia, Fthiotis
+|  Greece
