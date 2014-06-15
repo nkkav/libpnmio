@@ -13,7 +13,7 @@
 +-------------------+----------------------------------------------------------+
 | **Release Date**  | 14 June 2014                                             |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.0.0                                                    |
+| **Version**       | 1.0.1                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
 +-------------------+----------------------------------------------------------+
@@ -280,7 +280,7 @@ reference applications will also be generated and copied to the ``/bin``
 subdirectory.
 
 5. Run tests
-------------
+============
 
 Two sample scripts are provided in the ``/test`` subdirectory. Change 
 directory to ``/test`` and run the scripts as follows:
