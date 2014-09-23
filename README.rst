@@ -11,19 +11,23 @@
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
-| **Release Date**  | 14 June 2014                                             |
+| **Release Date**  | 23 September 2014                                        |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.0.1                                                    |
+| **Version**       | 1.1.0                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
 +-------------------+----------------------------------------------------------+
-|        **v1.0.0** | 20-02-2014                                               |
+|        **v1.1.0** | 23-09-2014                                               |
 |                   |                                                          |
-|                   | First public release.                                    |
+|                   | Moved AUTHORS, LICENSE, README, VERSION to top-level.    |
 +-------------------+----------------------------------------------------------+
 |        **v1.0.1** | 14-06-2014                                               |
 |                   |                                                          |
 |                   | Changed README to README.rst.                            |
++-------------------+----------------------------------------------------------+
+|        **v1.0.0** | 20-02-2014                                               |
+|                   |                                                          |
+|                   | First public release.                                    |
 +-------------------+----------------------------------------------------------+
 
 .. _XnView: http://www.xnview.com
@@ -62,10 +66,6 @@ The LIBPNMIO distribution includes the following files.
 +-----------------------+------------------------------------------------------+
 | /libpnmio             | Top-level directory                                  |
 +-----------------------+------------------------------------------------------+
-| /bin                  | Executables directory (initially empty)              |
-+-----------------------+------------------------------------------------------+
-| /doc                  | Documentation directory                              |
-+-----------------------+------------------------------------------------------+
 | AUTHORS               | List of authors.                                     |
 +-----------------------+------------------------------------------------------+
 | LICENSE               | License agreement (modified BSD license).            |
@@ -76,10 +76,12 @@ The LIBPNMIO distribution includes the following files.
 +-----------------------+------------------------------------------------------+
 | README.pdf            | PDF version of README.rst.                           |
 +-----------------------+------------------------------------------------------+
+| VERSION               | Current version of the LIBPNMIO distribution.        |
++-----------------------+------------------------------------------------------+
 | rst2docs.sh           | Shell script for generating the documentation using  |
 |                       | ``docutils``.                                        |
 +-----------------------+------------------------------------------------------+
-| VERSION               | Current version of the LIBPNMIO distribution.        |
+| /bin                  | Executables directory (initially empty)              |
 +-----------------------+------------------------------------------------------+
 | /lib                  | Compiled static library directory                    |
 +-----------------------+------------------------------------------------------+
@@ -293,8 +295,8 @@ PBM, PGM and PPM files can be directly visualized by using freeware image
 viewers such as XnView_ and Imagine_.
 
 
-6. Prerequisities
-=================
+6. Prerequisites
+================
 
 - Standard UNIX-based tools (tested with gcc-4.6.2 on MinGW/x64).
   

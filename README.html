@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>libpnmio user manual</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="libpnmio-user-manual">
+<h1 class="title">libpnmio user manual</h1>
+
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><strong>Title</strong></td>
+<td>libpnmio (I/O PNM library)</td>
+</tr>
+<tr><td><strong>Author</strong></td>
+<td>Nikolaos Kavvadias 2012, 2013, 2014</td>
+</tr>
+<tr><td><strong>Contact</strong></td>
+<td><a class="reference external" href="mailto:nikos&#64;nkavvadias.com">nikos&#64;nkavvadias.com</a></td>
+</tr>
+<tr><td><strong>Website</strong></td>
+<td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
+</tr>
+<tr><td><strong>Release Date</strong></td>
+<td>23 September 2014</td>
+</tr>
+<tr><td><strong>Version</strong></td>
+<td>1.1.0</td>
+</tr>
+<tr><td><strong>Rev. history</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.1.0</strong></td>
+<td><p class="first">23-09-2014</p>
+<p class="last">Moved AUTHORS, LICENSE, README, VERSION to top-level.</p>
+</td>
+</tr>
+<tr><td><strong>v1.0.1</strong></td>
+<td><p class="first">14-06-2014</p>
+<p class="last">Changed README to README.rst.</p>
+</td>
+</tr>
+<tr><td><strong>v1.0.0</strong></td>
+<td><p class="first">20-02-2014</p>
+<p class="last">First public release.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="introduction">
+<h1>1. Introduction</h1>
+<p>The <tt class="docutils literal">libpnmio</tt> library provides an implementation and API for reading
+and writing <a class="reference external" href="http://en.wikipedia.org/wiki/Netpbm_format">PNM</a> (some times termed as Portable AnyMap) images. The <a class="reference external" href="http://en.wikipedia.org/wiki/Netpbm_format">PNM</a>
+convention is collectively used to address <a class="reference external" href="http://netpbm.sourceforge.net/doc/pbm.html">PBM</a> (Portable Bitmap), <a class="reference external" href="http://netpbm.sourceforge.net/doc/pgm.html">PGM</a>
+(Portable Greymap) and <a class="reference external" href="http://netpbm.sourceforge.net/doc/ppm.html">PPM</a> (Portable Pixmap) images.</p>
+<p>The current version of <tt class="docutils literal">libpnmio</tt> supports the ASCII variation of the
+PNM formats, however, it will be extended in order to support the
+corresponding binary formats.</p>
+<p>The library is accompanied by two test applications, namely <tt class="docutils literal">randimg</tt>
+and <tt class="docutils literal">doset</tt>. <tt class="docutils literal">randimg</tt> produces PBM/PGM/PPM image files filled with
+random data. <tt class="docutils literal">doset</tt> generates a color illustration of the Mandelbrot set.</p>
+<p>Reference documentation for LIBPNMIO can be found in the <tt class="docutils literal">/doc</tt> subdirectory
+in plain text, HTML and PDF form.</p>
+</div>
+<div class="section" id="file-listing">
+<h1>2. File listing</h1>
+<p>The LIBPNMIO distribution includes the following files.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>/libpnmio</td>
+<td>Top-level directory</td>
+</tr>
+<tr><td>AUTHORS</td>
+<td>List of authors.</td>
+</tr>
+<tr><td>LICENSE</td>
+<td>License agreement (modified BSD license).</td>
+</tr>
+<tr><td>README.rst</td>
+<td>This file.</td>
+</tr>
+<tr><td>README.html</td>
+<td>HTML version of README.rst.</td>
+</tr>
+<tr><td>README.pdf</td>
+<td>PDF version of README.rst.</td>
+</tr>
+<tr><td>VERSION</td>
+<td>Current version of the LIBPNMIO distribution.</td>
+</tr>
+<tr><td>rst2docs.sh</td>
+<td>Shell script for generating the documentation using
+<tt class="docutils literal">docutils</tt>.</td>
+</tr>
+<tr><td>/bin</td>
+<td>Executables directory (initially empty)</td>
+</tr>
+<tr><td>/lib</td>
+<td>Compiled static library directory</td>
+</tr>
+<tr><td>/src</td>
+<td>Source code directory</td>
+</tr>
+<tr><td>Makefile</td>
+<td>Makefile for compiling the library and generating
+the executables.</td>
+</tr>
+<tr><td>doset.c</td>
+<td>Generates a color visualization of the Mandelbrot
+set.</td>
+</tr>
+<tr><td>pnmio.c</td>
+<td>Implementation of the <tt class="docutils literal">libpnmio</tt> library in C.</td>
+</tr>
+<tr><td>pnmio.h</td>
+<td>Header file (interface) of the <tt class="docutils literal">libpnmio</tt> library.</td>
+</tr>
+<tr><td>randimg.c</td>
+<td>Random PBM/PGM/PPM image generator.</td>
+</tr>
+<tr><td>/test</td>
+<td>Test script directory</td>
+</tr>
+<tr><td>run-doset.sh</td>
+<td>Bash script for running the Mandelbrot set example.</td>
+</tr>
+<tr><td>run-randimg.sh</td>
+<td>Bash script for running the random image generator.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="api-description">
+<h1>3. API description</h1>
+<p>This section summarizes the intended functionality of the functions supported
+by the <tt class="docutils literal">libpnmio</tt> application programming interface.</p>
+<div class="section" id="read-pbm-header">
+<h2>3.1. read_pbm_header</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);</tt></div>
+</div>
+<p>Read the header contents of a PBM (portable bit map) file. A PBM image file
+follows the format:</p>
+<pre class="literal-block">
+P1
+&lt;X&gt; &lt;Y&gt;
+&lt;I1&gt; &lt;I2&gt; ... &lt;IMAX&gt;
+</pre>
+<p>A binary PBM image file uses P4 instead of P1 and the data values are
+represented in binary.
+Comment lines start with <tt class="docutils literal">#</tt>.
+<tt class="docutils literal">&lt; &gt;</tt> denote integer values (in decimal). For the PBM format, they can
+take only the 0 and 1 values.
+<tt class="docutils literal">img_xdim</tt> and <tt class="docutils literal">img_ydim</tt> correspond to <tt class="docutils literal">X</tt> and <tt class="docutils literal">Y</tt>, respectively.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed; otherwise a binary PBM file
+is.</p>
+</div>
+<div class="section" id="read-pgm-header">
+<h2>3.2. read_pgm_header</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
+</div>
+<p>Read the header contents of a PGM (portable grey map) file. A PGM image file
+follows the format:</p>
+<pre class="literal-block">
+P2
+&lt;X&gt; &lt;Y&gt;
+&lt;levels&gt;
+&lt;I1&gt; &lt;I2&gt; ... &lt;IMAX&gt;
+</pre>
+<p>A binary PGM image file uses P5 instead of P2 and the data values are
+represented in binary.
+Comment lines start with <tt class="docutils literal">#</tt>.
+<tt class="docutils literal">&lt; &gt;</tt> denote integer values (in decimal).
+<tt class="docutils literal">img_xdim</tt>, <tt class="docutils literal">img_ydim</tt>, and <tt class="docutils literal">img_colors</tt> correspond to <tt class="docutils literal">X</tt>, <tt class="docutils literal">Y</tt>
+and <tt class="docutils literal">levels</tt>, respectively.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed; otherwise a binary PGM file
+is.</p>
+</div>
+<div class="section" id="read-ppm-header">
+<h2>3.3. read_ppm_header</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
+</div>
+<p>Read the header contents of a PPM (portable pix map) file. A PPM image file
+follows the format:</p>
+<pre class="literal-block">
+P3
+&lt;X&gt; &lt;Y&gt;
+&lt;levels&gt;
+&lt;R1&gt; &lt;G1&gt; &lt;B1&gt; ... &lt;RMAX&gt; &lt;GMAX&gt; &lt;BMAX&gt;
+</pre>
+<p>A binary PPM image file uses P6 instead of P3 and the data values are
+represented in binary.
+Comment lines start with <tt class="docutils literal">#</tt>.
+<tt class="docutils literal">&lt; &gt;</tt> denote integer values (in decimal).
+<tt class="docutils literal">img_xdim</tt>, <tt class="docutils literal">img_ydim</tt>, and <tt class="docutils literal">img_colors</tt> correspond to <tt class="docutils literal">X</tt>, <tt class="docutils literal">Y</tt>
+and <tt class="docutils literal">levels</tt>, respectively. Each color component, R, G, and B can take any
+value from 0 to levels.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
+is.</p>
+</div>
+<div class="section" id="read-pbm-data">
+<h2>3.4. read_pbm_data</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_pgm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
+</div>
+<p>Read the data contents of a PBM (portable bit map) file.
+<tt class="docutils literal">img_in</tt> denotes an array of integer values representing image data.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed; otherwise a binary PBM file
+is.</p>
+</div>
+<div class="section" id="read-pgm-data">
+<h2>3.5. read_pgm_data</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_pgm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
+</div>
+<p>Read the data contents of a PGM (portable grey map) file.
+<tt class="docutils literal">img_in</tt> denotes an array of integer values representing image data.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed; otherwise a binary PGM file
+is.</p>
+</div>
+<div class="section" id="read-ppm-data">
+<h2>3.6. read_ppm_data</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_ppm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
+</div>
+<p>Read the data contents of a PPM (portable pix map) file.
+<tt class="docutils literal">img_in</tt> denotes an array of integer values representing image data.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
+is.</p>
+</div>
+<div class="section" id="write-pbm-file">
+<h2>3.7. write_pbm_file</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
+<div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals, int is_ascii);</tt></div>
+</div>
+<p>Write the contents of a PBM (portable bit map) file.
+Data stored in array <tt class="docutils literal">img_out</tt> are written to file <tt class="docutils literal">f</tt>. This file is
+assumed to be already opened under the name <tt class="docutils literal">img_out_fname</tt>. The
+image data represent an image of size <tt class="docutils literal">x_size</tt> by <tt class="docutils literal">y_size</tt>. x-axis and
+y-axis scaling factors can be defined by <tt class="docutils literal">x_scale_val</tt> and <tt class="docutils literal">y_scale_val</tt>.
+<tt class="docutils literal">linevals</tt> determines the emission of newline characters for easier
+reading of the PBM file data.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed; otherwise a binary PBM file
+is.</p>
+</div>
+<div class="section" id="write-pgm-file">
+<h2>3.8. write_pgm_file</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
+<div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors,</tt></div>
+<div class="line"><tt class="docutils literal">int linevals, int is_ascii);</tt></div>
+</div>
+<p>Write the contents of a PGM (portable grey map) file.
+Data stored in array <tt class="docutils literal">img_out</tt> are written to file <tt class="docutils literal">f</tt>. This file is
+assumed to be already opened under the name <tt class="docutils literal">img_out_fname</tt>. The
+image data represent an image of size <tt class="docutils literal">x_size</tt> by <tt class="docutils literal">y_size</tt>. x-axis and
+y-axis scaling factors can be defined by <tt class="docutils literal">x_scale_val</tt> and <tt class="docutils literal">y_scale_val</tt>.
+<tt class="docutils literal">img_colors</tt> determines the levels (0 to levels) for the common color
+component.
+<tt class="docutils literal">linevals</tt> determines the emission of newline characters for easier
+reading of the PGM file data.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed; otherwise a binary PGM file
+is.</p>
+</div>
+<div class="section" id="write-ppm-file">
+<h2>3.9. write_ppm_file</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
+<div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors, int is_ascii);</tt></div>
+</div>
+<p>Write the contents of a PGM (portable grey map) file.
+Data stored in array <tt class="docutils literal">img_out</tt> are written to file <tt class="docutils literal">f</tt>. This file is
+assumed to be already opened under the name <tt class="docutils literal">img_out_fname</tt>. The
+image data represent an image of size <tt class="docutils literal">x_size</tt> by <tt class="docutils literal">y_size</tt>. x-axis and
+y-axis scaling factors can be defined by <tt class="docutils literal">x_scale_val</tt> and <tt class="docutils literal">y_scale_val</tt>.
+<tt class="docutils literal">img_colors</tt> determines the levels (0 to levels) for the common color
+component. Each R-G-B triplet is printed to a separate line.
+If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
+is.</p>
+</div>
+</div>
+<div class="section" id="build-and-setup">
+<h1>4. Build and setup</h1>
+<p>In order to produce the static library, change directory to <tt class="docutils literal">/src</tt> and
+run the Makefile as follows:</p>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">make clean ; make</tt></div>
+</div>
+<p>This will produce the static library <tt class="docutils literal">libpnmio.a</tt> and copy it to the
+<tt class="docutils literal">/lib</tt> subdirectory of the distribution. The executable files for the
+reference applications will also be generated and copied to the <tt class="docutils literal">/bin</tt>
+subdirectory.</p>
+</div>
+<div class="section" id="run-tests">
+<h1>5. Run tests</h1>
+<p>Two sample scripts are provided in the <tt class="docutils literal">/test</tt> subdirectory. Change
+directory to <tt class="docutils literal">/test</tt> and run the scripts as follows:</p>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">cd test</tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">./run-doset.sh</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">./run-randimg.sh</span></tt></div>
+</div>
+<p>PBM, PGM and PPM files can be directly visualized by using freeware image
+viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a> and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>.</p>
+</div>
+<div class="section" id="prerequisites">
+<h1>6. Prerequisites</h1>
+<ul>
+<li><p class="first">Standard UNIX-based tools (tested with gcc-4.6.2 on MinGW/x64).</p>
+<ul class="simple">
+<li>make</li>
+<li>bash (shell)</li>
+</ul>
+<p>For this reason, MinGW (<a class="reference external" href="http://www.mingw.org">http://www.mingw.org</a>) or Cygwin
+(<a class="reference external" href="http://sources.redhat.com/cygwin">http://sources.redhat.com/cygwin</a>) are suggested, since POSIX emulation
+environments of sufficient completeness.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="contact">
+<h1>7. Contact</h1>
+<p>You may contact me at:</p>
+<div class="line-block">
+<div class="line">Nikolaos Kavvadias &lt;<a class="reference external" href="mailto:nikos&#64;nkavvadias.com">nikos&#64;nkavvadias.com</a>&gt;</div>
+<div class="line">Independent Consultant</div>
+<div class="line"><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></div>
+<div class="line">Kornarou 12 Rd,</div>
+<div class="line">35100 Lamia, Fthiotis</div>
+<div class="line">Greece</div>
+</div>
+</div>
+</div>
+</body>
+</html>
