@@ -13,9 +13,13 @@
 +-------------------+----------------------------------------------------------+
 | **Release Date**  | 25 October 2014                                          |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.2.0                                                    |
+| **Version**       | 1.2.1                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
++-------------------+----------------------------------------------------------+
+|        **v1.2.1** | 2014-10-25                                               |
+|                   |                                                          |
+|                   | Added sample PBM, PGM, PPM and PFM images for testing.   |
 +-------------------+----------------------------------------------------------+
 |        **v1.2.0** | 2014-10-25                                               |
 |                   |                                                          |
@@ -67,7 +71,9 @@ and ``doset``. ``randimg`` produces PBM/PGM/PPM image files filled with
 random data. ``doset`` generates a color illustration of the Mandelbrot set. 
 
 Since version 1.2.0, support for the Portable Float Map format (PFM_) has been 
-added. Additional information on the PFM format can be found at the 
+added. 
+
+Additional information on the PFM format can be found at the 
 `PFM page by Paul Bourke`_.
 
 Reference documentation for LIBPNMIO can be found in the ``/doc`` subdirectory 
@@ -77,7 +83,7 @@ in plain text, HTML and PDF form.
 2. File listing
 ===============
 
-The LIBPNMIO distribution includes the following files. 
+The ``libpnmio`` distribution includes the following files:
 
 +-----------------------+------------------------------------------------------+
 | /libpnmio             | Top-level directory                                  |
@@ -98,6 +104,11 @@ The LIBPNMIO distribution includes the following files.
 |                       | ``docutils``.                                        |
 +-----------------------+------------------------------------------------------+
 | /bin                  | Executables directory (initially empty)              |
++-----------------------+------------------------------------------------------+
+| /images               | Image data (PBM, PGM, PPM, PFM) for testing          |
++-----------------------+------------------------------------------------------+
+| \*.pbm, \*.pgm,       | Sample images.                                       |
+| \*.ppm, \*.pfm        |                                                      |
 +-----------------------+------------------------------------------------------+
 | /lib                  | Compiled static library directory                    |
 +-----------------------+------------------------------------------------------+
@@ -122,6 +133,25 @@ The LIBPNMIO distribution includes the following files.
 | run-randimg.sh        | Bash script for running the random image generator.  |
 +-----------------------+------------------------------------------------------+
 
+The original sources for the images included in the ``/libpnmio/images`` 
+directory are the following:
+
+* *prague, squares, lena32, fruit, blocks*
+
+  - http://graphics.stanford.edu/~jowens/223b/examples.html
+
+* *letter_j, feep, ppmex255.ascii, ppmex1*
+
+  - http://en.wikipedia.org/wiki/Netpbm_format
+
+* *haus*
+
+  - http://goo.gl/DBbPpF
+
+* *ppmex255.binary*
+
+  - http://wiki.multimedia.cx/index.php
+
 
 3. API description
 ==================
@@ -135,7 +165,9 @@ by the ``libpnmio`` application programming interface.
 | ``void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);``
 
 Read the header contents of a PBM (portable bit map) file. A PBM image file 
-follows the format::
+follows the format:
+
+::
 
   P1
   <X> <Y>
@@ -157,7 +189,9 @@ is.
 | ``read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
 Read the header contents of a PGM (portable grey map) file. A PGM image file 
-follows the format::
+follows the format:
+
+::
 
   P2
   <X> <Y> 
@@ -179,7 +213,9 @@ is.
 | ``void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
 Read the header contents of a PPM (portable pix map) file. A PPM image file 
-follows the format::
+follows the format:
+
+::
 
   P3
   <X> <Y> 
@@ -202,7 +238,9 @@ is.
 | ``void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);``
 
 Read the header contents of a PFM (portable float map) file. A PFM image file 
-follows the format::
+follows the format:
+
+::
 
   [PF|Pf]
   <X> <Y> 
@@ -372,7 +410,7 @@ be found here: http://web.archive.org/web/20060614160328/http://www.debevec.org/
   For this reason, MinGW (http://www.mingw.org) or Cygwin 
   (http://sources.redhat.com/cygwin) are suggested, since POSIX emulation 
   environments of sufficient completeness.
-  
+
 
 7. Contact
 ==========

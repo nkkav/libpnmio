@@ -363,10 +363,15 @@ ul.auto-toc {
 <td>25 October 2014</td>
 </tr>
 <tr><td><strong>Version</strong></td>
-<td>1.2.0</td>
+<td>1.2.1</td>
 </tr>
 <tr><td><strong>Rev. history</strong></td>
 <td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.2.1</strong></td>
+<td><p class="first">2014-10-25</p>
+<p class="last">Added sample PBM, PGM, PPM and PFM images for testing.</p>
+</td>
 </tr>
 <tr><td><strong>v1.2.0</strong></td>
 <td><p class="first">2014-10-25</p>
@@ -409,14 +414,15 @@ corresponding binary formats.</p>
 and <tt class="docutils literal">doset</tt>. <tt class="docutils literal">randimg</tt> produces PBM/PGM/PPM image files filled with
 random data. <tt class="docutils literal">doset</tt> generates a color illustration of the Mandelbrot set.</p>
 <p>Since version 1.2.0, support for the Portable Float Map format (<a class="reference external" href="http://netpbm.sourceforge.net/doc/pfm.html">PFM</a>) has been
-added. Additional information on the PFM format can be found at the
+added.</p>
+<p>Additional information on the PFM format can be found at the
 <a class="reference external" href="http://paulbourke.net/dataformats/pbmhdr/">PFM page by Paul Bourke</a>.</p>
 <p>Reference documentation for LIBPNMIO can be found in the <tt class="docutils literal">/doc</tt> subdirectory
 in plain text, HTML and PDF form.</p>
 </div>
 <div class="section" id="file-listing">
 <h1>2. File listing</h1>
-<p>The LIBPNMIO distribution includes the following files.</p>
+<p>The <tt class="docutils literal">libpnmio</tt> distribution includes the following files:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -450,6 +456,13 @@ in plain text, HTML and PDF form.</p>
 </tr>
 <tr><td>/bin</td>
 <td>Executables directory (initially empty)</td>
+</tr>
+<tr><td>/images</td>
+<td>Image data (PBM, PGM, PPM, PFM) for testing</td>
+</tr>
+<tr><td>*.pbm, *.pgm,
+*.ppm, *.pfm</td>
+<td>Sample images.</td>
 </tr>
 <tr><td>/lib</td>
 <td>Compiled static library directory</td>
@@ -485,6 +498,26 @@ set.</td>
 </tr>
 </tbody>
 </table>
+<p>The original sources for the images included in the <tt class="docutils literal">/libpnmio/images</tt>
+directory are the following:</p>
+<ul class="simple">
+<li><em>prague, squares, lena32, fruit, blocks</em><ul>
+<li><a class="reference external" href="http://graphics.stanford.edu/~jowens/223b/examples.html">http://graphics.stanford.edu/~jowens/223b/examples.html</a></li>
+</ul>
+</li>
+<li><em>letter_j, feep, ppmex255.ascii, ppmex1</em><ul>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Netpbm_format">http://en.wikipedia.org/wiki/Netpbm_format</a></li>
+</ul>
+</li>
+<li><em>haus</em><ul>
+<li><a class="reference external" href="http://goo.gl/DBbPpF">http://goo.gl/DBbPpF</a></li>
+</ul>
+</li>
+<li><em>ppmex255.binary</em><ul>
+<li><a class="reference external" href="http://wiki.multimedia.cx/index.php">http://wiki.multimedia.cx/index.php</a></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="api-description">
 <h1>3. API description</h1>
