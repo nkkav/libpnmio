@@ -11,11 +11,16 @@
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
-| **Release Date**  | 01 October 2014                                          |
+| **Release Date**  | 25 October 2014                                          |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.1.1                                                    |
+| **Version**       | 1.2.0                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
++-------------------+----------------------------------------------------------+
+|        **v1.2.0** | 2014-10-25                                               |
+|                   |                                                          |
+|                   | Added support for reading and writing PFM (Portable Float|
+|                   | Map) image data files.                                   |
 +-------------------+----------------------------------------------------------+
 |        **v1.1.1** | 2014-10-01                                               |
 |                   |                                                          |
@@ -40,6 +45,9 @@
 .. _PBM: http://netpbm.sourceforge.net/doc/pbm.html
 .. _PGM: http://netpbm.sourceforge.net/doc/pgm.html
 .. _PPM: http://netpbm.sourceforge.net/doc/ppm.html
+.. _PFM: http://netpbm.sourceforge.net/doc/pfm.html
+.. _PFM page by Paul Bourke: http://paulbourke.net/dataformats/pbmhdr/
+.. _Paul Debevec: http://www.pauldebevec.com/Research/HDR/
 
 
 1. Introduction
@@ -57,6 +65,10 @@ corresponding binary formats.
 The library is accompanied by two test applications, namely ``randimg`` 
 and ``doset``. ``randimg`` produces PBM/PGM/PPM image files filled with 
 random data. ``doset`` generates a color illustration of the Mandelbrot set. 
+
+Since version 1.2.0, support for the Portable Float Map format (PFM_) has been 
+added. Additional information on the PFM format can be found at the 
+`PFM page by Paul Bourke`_.
 
 Reference documentation for LIBPNMIO can be found in the ``/doc`` subdirectory 
 in plain text, HTML and PDF form.
@@ -101,7 +113,7 @@ The LIBPNMIO distribution includes the following files.
 +-----------------------+------------------------------------------------------+
 | pnmio.h               | Header file (interface) of the ``libpnmio`` library. |
 +-----------------------+------------------------------------------------------+
-| randimg.c             | Random PBM/PGM/PPM image generator.                  |
+| randimg.c             | Random PBM/PGM/PPM/PFM image generator.              |
 +-----------------------+------------------------------------------------------+
 | /test                 | Test script directory                                |
 +-----------------------+------------------------------------------------------+
@@ -123,9 +135,7 @@ by the ``libpnmio`` application programming interface.
 | ``void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);``
 
 Read the header contents of a PBM (portable bit map) file. A PBM image file 
-follows the format:
-
-::
+follows the format::
 
   P1
   <X> <Y>
@@ -147,9 +157,7 @@ is.
 | ``read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
 Read the header contents of a PGM (portable grey map) file. A PGM image file 
-follows the format:
-
-::
+follows the format::
 
   P2
   <X> <Y> 
@@ -171,9 +179,7 @@ is.
 | ``void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
 Read the header contents of a PPM (portable pix map) file. A PPM image file 
-follows the format:
-
-::
+follows the format::
 
   P3
   <X> <Y> 
@@ -190,7 +196,32 @@ value from 0 to levels.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
-3.4. read_pbm_data
+3.4. read_pfm_header
+--------------------
+
+| ``void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);``
+
+Read the header contents of a PFM (portable float map) file. A PFM image file 
+follows the format::
+
+  [PF|Pf]
+  <X> <Y> 
+  (endianess)
+  {R1}{G1}{B1} ... {RMAX}{GMAX}{BMAX} 
+
+A PFM image file has its data values represented in binary.
+Comment lines start with ``#``. 
+``< >`` denote integer values (in decimal).
+``( )`` denote floating-point values (in decimal).
+``{ }`` denote floating-point values (coded in binary).
+``img_xdim`` and ``img_ydim`` correspond to ``X`` and ``Y``, respectively. If 
+``img_type`` is equal to 1, the PFM image encodes RGB (color) information, 
+otherwise if it is equal to 0, it stores greyscale information.
+If ``endianess`` is negative (-1), the binary data are encoded in little-endian 
+ordering, otherwise if ``endianess`` is positive (+1), the data follow 
+big-endian ordering.
+
+3.5. read_pbm_data
 ------------------
 
 | ``void read_pgm_data(FILE *f, int *img_in, int is_ascii);`` 
@@ -200,7 +231,7 @@ Read the data contents of a PBM (portable bit map) file.
 If ``is_ascii`` is 1, an ASCII PBM file is assumed; otherwise a binary PBM file 
 is.
 
-3.5. read_pgm_data
+3.6. read_pgm_data
 ------------------
 
 | ``void read_pgm_data(FILE *f, int *img_in, int is_ascii);``
@@ -210,7 +241,7 @@ Read the data contents of a PGM (portable grey map) file.
 If ``is_ascii`` is 1, an ASCII PGM file is assumed; otherwise a binary PGM file 
 is.
 
-3.6. read_ppm_data
+3.7. read_ppm_data
 ------------------
 
 | ``void read_ppm_data(FILE *f, int *img_in, int is_ascii);``
@@ -220,7 +251,18 @@ Read the data contents of a PPM (portable pix map) file.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
-3.7. write_pbm_file
+3.8. read_pfm_data
+------------------
+
+| ``void read_ppm_data(FILE *f, float *img_in, int img_type, int endianess);``
+
+Read the data contents of a PFM (portable float map) file.
+``img_in`` denotes an array of floating-point (``float``) values representing 
+image data. If ``img_type`` is 1, color/RGB image data are assumed; otherwise 
+(0) the image data are in greyscale. A negative ``endianess`` indicates 
+little-endian ordering and positive one, big-endian.
+
+3.9. write_pbm_file
 -------------------
 
 | ``void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,`` 
@@ -236,8 +278,8 @@ reading of the PBM file data.
 If ``is_ascii`` is 1, an ASCII PBM file is assumed; otherwise a binary PBM file 
 is.
 
-3.8. write_pgm_file
--------------------
+3.10. write_pgm_file
+--------------------
 
 | ``void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors,``
@@ -255,13 +297,13 @@ reading of the PGM file data.
 If ``is_ascii`` is 1, an ASCII PGM file is assumed; otherwise a binary PGM file 
 is.
 
-3.9. write_ppm_file
--------------------
+3.11. write_ppm_file
+--------------------
 
 | ``void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors, int is_ascii);``
 
-Write the contents of a PGM (portable grey map) file.
+Write the contents of a PPM (portable pix map) file.
 Data stored in array ``img_out`` are written to file ``f``. This file is 
 assumed to be already opened under the name ``img_out_fname``. The 
 image data represent an image of size ``x_size`` by ``y_size``. x-axis and 
@@ -271,6 +313,23 @@ component. Each R-G-B triplet is printed to a separate line.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
+3.12. write_pfm_file
+--------------------
+
+| ``void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,`` 
+| ``int x_size, int y_size, int img_type, int endianess);``
+
+Write the contents of a PFM (portable float map) file.
+Data stored in array ``img_out`` are written to file ``f``. This file is 
+assumed to be already opened under the name ``img_out_fname``. The 
+image data represent an image of size ``x_size`` by ``y_size``. x-axis and 
+y-axis scaling factors can be defined by ``x_scale_val`` and ``y_scale_val``.
+If ``img_type`` is equal to 1, the PFM image encodes RGB (color) information, 
+otherwise if it is equal to 0, it stores greyscale information.
+If ``endianess`` is negative (-1), the binary data are encoded in little-endian 
+ordering, otherwise if ``endianess`` is positive (+1), the data follow 
+big-endian ordering.
+
 
 4. Build and setup
 ==================
@@ -278,12 +337,13 @@ is.
 In order to produce the static library, change directory to ``/src`` and 
 run the Makefile as follows:
 
-| ``make clean ; make``
+| ``$ make clean ; make``
 
 This will produce the static library ``libpnmio.a`` and copy it to the 
 ``/lib`` subdirectory of the distribution. The executable files for the 
 reference applications will also be generated and copied to the ``/bin``
 subdirectory.
+
 
 5. Run tests
 ============
@@ -291,18 +351,20 @@ subdirectory.
 Two sample scripts are provided in the ``/test`` subdirectory. Change 
 directory to ``/test`` and run the scripts as follows:
 
-| ``cd test``
-| ``./run-doset.sh``
-| ``./run-randimg.sh``
+| ``$ cd test``
+| ``$ ./run-doset.sh``
+| ``$ ./run-randimg.sh``
 
 PBM, PGM and PPM files can be directly visualized by using freeware image 
-viewers such as XnView_ and Imagine_.
+viewers such as XnView_ and Imagine_. The informal/non-standardized PFM 
+format was introduced by `Paul Debevec`_. A PFM viewer (``HDRView``) can 
+be found here: http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/ .
 
 
 6. Prerequisites
 ================
 
-- Standard UNIX-based tools (tested with gcc-4.6.2 on MinGW/x64).
+- Standard UNIX-based tools (tested with gcc-4.6.2 and gcc-4.8.1 on MinGW/x64).
   
   * make
   * bash (shell)

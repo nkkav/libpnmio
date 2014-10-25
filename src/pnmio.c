@@ -25,8 +25,13 @@
 #include <ctype.h>
 #include <string.h>
 #include <math.h>
+#include "pnmio.h"
 
 #define  MAXLINE         1024
+#define  LITTLE_ENDIAN     -1
+#define  BIG_ENDIAN         1
+#define  GREYSCALE_TYPE     0 /* used for PFM */
+#define  RGB_TYPE           1 /* used for PFM */ 
 
 
 /* read_pbm_header:
@@ -168,6 +173,87 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
   *img_colors = maxcolors_val;
 }
 
+/* read_pfm_header:
+ * Read the header contents of a PFM (portable float map) file.
+ * A PFM image file follows the format:
+ * [PF|Pf]
+ * <X> <Y> 
+ * (endianess)
+ * {R1}{G1}{B1} ... {RMAX}{GMAX}{BMAX} 
+ * NOTE1: Comment lines, if allowed, start with '#'.
+ # NOTE2: < > denote integer values (in decimal).
+ # NOTE3: ( ) denote floating-point values (in decimal).
+ # NOTE4: { } denote floating-point values (coded in binary).
+ */
+void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess)
+{
+  /* Union definition for extracting s|m|e of a float. */
+  typedef union {
+    float f;
+    struct {
+      unsigned int m : 23; /* mantissa */
+      unsigned int e :  8; /* exponent */
+      unsigned int s :  1; /* sign     */
+    } field;
+  } float_type;
+  int c;
+  int x_val, y_val;
+  int is_rgb=0, is_greyscale=0;
+  float_type aspect_ratio;
+  char dummy_string[48];
+  char line[MAXLINE];
+
+  /* Read the magic number string. */
+  fscanf(f, "%s", dummy_string);
+  if ((strcmp(dummy_string, "PF") != 0) ||
+      (strcmp(dummy_string, "Pf") != 0)) {
+    fprintf(stderr, "Error: Input file not in PFM format!\n");
+    exit(1);
+  }
+
+  if (dummy_string[1] == 'F') {
+    is_rgb = 1;
+  } else if (dummy_string[1] == 'f') {
+    is_greyscale = 1;
+  } else {
+    fprintf(stderr, "Error: Invalid identifier line: %s\n", dummy_string);
+    exit(1);
+  }        
+
+  /* Read the rest of the PFM file header. */
+  while ((c = fgetc(f)) != EOF) {
+    /* Detect a comment line. */
+    if (c == '#') {
+      /* Parse and omit the contents of the comment line. */
+      if (fgets(line, MAXLINE, f) != NULL) {
+        ;  
+      }
+      break;
+    } else if (isdigit(c)) {
+      ungetc(c, f);
+      break;
+    }
+  }
+  fscanf(f, "%d", &x_val);
+  fscanf(f, "%d", &y_val);
+  fscanf(f, "%f", &aspect_ratio.f);
+
+  /* FIXME: Aspect ratio different to 1.0 is not yet supported. */
+  if (!floatEqualComparison(aspect_ratio.f, 1.0, 1E-06)) {
+    fprintf(stderr, "Error: Aspect ration different to 1.0 is unsupported!\n");
+    exit(1);
+  }
+
+  *img_xdim   = x_val;
+  *img_ydim   = y_val;
+  *img_type   = is_rgb & ~is_greyscale;
+  if (aspect_ratio.field.s > 0) {
+    *endianess = 1;
+  } else {
+    *endianess = -1;
+  }
+}
+
 /* read_pbm_data:
  * Read the data contents of a PBM (portable bit map) file.
  */
@@ -226,6 +312,33 @@ void read_ppm_data(FILE *f, int *img_in, int is_ascii)
     img_in[i++] = r_val;
     img_in[i++] = g_val;
     img_in[i++] = b_val;
+  }
+  fclose(f);
+}
+
+/* read_pfm_data:
+ * Read the data contents of a PFM (portable float map) file.
+ */
+void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess)
+{
+  int i=0, c;
+  int swap = (endianess == 1) ? 1 : 0;
+  float r_val, g_val, b_val;
+    
+  /* Read the rest of the PPM file. */
+  while ((c = fgetc(f)) != EOF) {
+    /* Read a possibly byte-swapped float. */
+    if (img_type == RGB_TYPE) {
+      ReadFloat(f, &r_val, swap);
+      ReadFloat(f, &g_val, swap);
+      ReadFloat(f, &b_val, swap); 
+      img_in[i++] = r_val;
+      img_in[i++] = g_val;
+      img_in[i++] = b_val;
+    } else if (img_type == GREYSCALE_TYPE) {
+      ReadFloat(f, &g_val, swap);
+      img_in[i++] = g_val;
+    }
   }
   fclose(f);
 }
@@ -362,4 +475,120 @@ void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,
     }
   }  
   fclose(f);
+}
+
+/* write_pfm_file:
+ * Write the contents of a PFM (portable float map) file.
+ */
+void write_pfm_file(FILE *f, float *img_out, char *img_out_fname, 
+  int x_size, int y_size, 
+  int img_type, int endianess)
+{
+  int i, j, x_scaled_size, y_scaled_size;
+//  int swap = (endianess == 1) ? 1 : 0;
+  int swap = 0;
+  float fendian = endianess;
+  unsigned char buffer[sizeof(float)];
+  
+  x_scaled_size = x_size;
+  y_scaled_size = y_size;
+  /* Write the magic number string. */
+  if (img_type == RGB_TYPE) {
+    fprintf(f, "PF\n");
+  } else if (img_type == GREYSCALE_TYPE) {
+    fprintf(f, "Pf\n");
+  } else {
+    fprintf(stderr, "Error: Image type invalid for PFM format!\n");
+    exit(1);    
+  }
+  /* Write the image dimensions. */
+  fprintf(f, "%d %d\n", x_scaled_size, y_scaled_size);
+  /* Write the endianess/scale factor as float. */
+  fprintf(f, "%f\n", fendian);
+  
+  /* Write the image data. */
+  for (i = 0; i < y_scaled_size; i++) {
+    for (j = 0; j < x_scaled_size; j++) {
+      if (img_type == RGB_TYPE) {
+        WriteFloat(f, &img_out[3*(i*x_scaled_size+j)+0], swap);
+        WriteFloat(f, &img_out[3*(i*x_scaled_size+j)+1], swap);
+        WriteFloat(f, &img_out[3*(i*x_scaled_size+j)+2], swap);
+      } else if (img_type == GREYSCALE_TYPE) {
+        WriteFloat(f, &img_out[i*x_scaled_size+j], swap);
+      }
+    }
+  }  
+  fclose(f);
+}
+
+/* ReadFloat:
+ * Read a possibly byte swapped floating-point number.
+ * NOTE: Assume IEEE format.
+ * Source: http://paulbourke.net/dataformats/pbmhdr/
+ */
+int ReadFloat(FILE *fptr, float *f, int swap)
+{
+  unsigned char *cptr, tmp;
+
+  if (fread(f, 4, 1, fptr) != 1) {
+    return (FALSE);
+  }   
+  if (swap) {
+    cptr    = (unsigned char *)f;
+    tmp     = cptr[0];
+    cptr[0] = cptr[3];
+    cptr[3] = tmp;
+    tmp     = cptr[1];
+    cptr[1] = cptr[2];
+    cptr[2] = tmp;
+  }
+  return (TRUE);
+}
+
+/* WriteFloat:
+ * Write a possibly byte-swapped floating-point number.
+ * NOTE: Assume IEEE format.
+ */
+int WriteFloat(FILE *fptr, float *f, int swap)
+{
+  unsigned char *cptr, tmp;
+
+  if (swap) {
+    cptr    = (unsigned char*)f;
+    tmp     = cptr[0];
+    cptr[0] = cptr[3];
+    cptr[3] = tmp;
+    tmp     = cptr[1];
+    cptr[1] = cptr[2];
+    cptr[2] = tmp;
+  }
+  if (fwrite(f, sizeof(float), 1, fptr) != 1) {
+    return (FALSE);
+  }  
+  return (TRUE); 
+}
+
+/* floatEqualComparison: 
+ * Compare two floats and accept equality if not different than
+ * maxRelDiff (a specified maximum relative difference).
+ */
+int floatEqualComparison(float A, float B, float maxRelDiff)
+{
+  float largest, diff = fabs(A-B);
+  A = fabs(A);
+  B = fabs(B);
+  largest = (B > A) ? B : A;
+  if (diff <= largest * maxRelDiff) {
+    return 1;
+  }
+  return 0;
+}
+
+/* frand48:
+ * Emulate a floating-point PRNG.
+ * Source: http://c-faq.com/lib/rand48.html
+ */
+float frand(void)
+{
+  return rand() / (RAND_MAX + 1.0);
 }

@@ -360,13 +360,19 @@ ul.auto-toc {
 <td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
 </tr>
 <tr><td><strong>Release Date</strong></td>
-<td>01 October 2014</td>
+<td>25 October 2014</td>
 </tr>
 <tr><td><strong>Version</strong></td>
-<td>1.1.1</td>
+<td>1.2.0</td>
 </tr>
 <tr><td><strong>Rev. history</strong></td>
 <td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.2.0</strong></td>
+<td><p class="first">2014-10-25</p>
+<p class="last">Added support for reading and writing PFM (Portable Float
+Map) image data files.</p>
+</td>
 </tr>
 <tr><td><strong>v1.1.1</strong></td>
 <td><p class="first">2014-10-01</p>
@@ -402,6 +408,9 @@ corresponding binary formats.</p>
 <p>The library is accompanied by two test applications, namely <tt class="docutils literal">randimg</tt>
 and <tt class="docutils literal">doset</tt>. <tt class="docutils literal">randimg</tt> produces PBM/PGM/PPM image files filled with
 random data. <tt class="docutils literal">doset</tt> generates a color illustration of the Mandelbrot set.</p>
+<p>Since version 1.2.0, support for the Portable Float Map format (<a class="reference external" href="http://netpbm.sourceforge.net/doc/pfm.html">PFM</a>) has been
+added. Additional information on the PFM format can be found at the
+<a class="reference external" href="http://paulbourke.net/dataformats/pbmhdr/">PFM page by Paul Bourke</a>.</p>
 <p>Reference documentation for LIBPNMIO can be found in the <tt class="docutils literal">/doc</tt> subdirectory
 in plain text, HTML and PDF form.</p>
 </div>
@@ -463,7 +472,7 @@ set.</td>
 <td>Header file (interface) of the <tt class="docutils literal">libpnmio</tt> library.</td>
 </tr>
 <tr><td>randimg.c</td>
-<td>Random PBM/PGM/PPM image generator.</td>
+<td>Random PBM/PGM/PPM/PFM image generator.</td>
 </tr>
 <tr><td>/test</td>
 <td>Test script directory</td>
@@ -547,8 +556,33 @@ value from 0 to levels.
 If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
 is.</p>
 </div>
+<div class="section" id="read-pfm-header">
+<h2>3.4. read_pfm_header</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);</tt></div>
+</div>
+<p>Read the header contents of a PFM (portable float map) file. A PFM image file
+follows the format:</p>
+<pre class="literal-block">
+[PF|Pf]
+&lt;X&gt; &lt;Y&gt;
+(endianess)
+{R1}{G1}{B1} ... {RMAX}{GMAX}{BMAX}
+</pre>
+<p>A PFM image file has its data values represented in binary.
+Comment lines start with <tt class="docutils literal">#</tt>.
+<tt class="docutils literal">&lt; &gt;</tt> denote integer values (in decimal).
+<tt class="docutils literal">( )</tt> denote floating-point values (in decimal).
+<tt class="docutils literal">{ }</tt> denote floating-point values (coded in binary).
+<tt class="docutils literal">img_xdim</tt> and <tt class="docutils literal">img_ydim</tt> correspond to <tt class="docutils literal">X</tt> and <tt class="docutils literal">Y</tt>, respectively. If
+<tt class="docutils literal">img_type</tt> is equal to 1, the PFM image encodes RGB (color) information,
+otherwise if it is equal to 0, it stores greyscale information.
+If <tt class="docutils literal">endianess</tt> is negative (-1), the binary data are encoded in little-endian
+ordering, otherwise if <tt class="docutils literal">endianess</tt> is positive (+1), the data follow
+big-endian ordering.</p>
+</div>
 <div class="section" id="read-pbm-data">
-<h2>3.4. read_pbm_data</h2>
+<h2>3.5. read_pbm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_pgm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
 </div>
@@ -558,7 +592,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-pgm-data">
-<h2>3.5. read_pgm_data</h2>
+<h2>3.6. read_pgm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_pgm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
 </div>
@@ -568,7 +602,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-ppm-data">
-<h2>3.6. read_ppm_data</h2>
+<h2>3.7. read_ppm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_ppm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
 </div>
@@ -577,8 +611,19 @@ is.</p>
 If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
 is.</p>
 </div>
+<div class="section" id="read-pfm-data">
+<h2>3.8. read_pfm_data</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void read_ppm_data(FILE *f, float *img_in, int img_type, int endianess);</tt></div>
+</div>
+<p>Read the data contents of a PFM (portable float map) file.
+<tt class="docutils literal">img_in</tt> denotes an array of floating-point (<tt class="docutils literal">float</tt>) values representing
+image data. If <tt class="docutils literal">img_type</tt> is 1, color/RGB image data are assumed; otherwise
+(0) the image data are in greyscale. A negative <tt class="docutils literal">endianess</tt> indicates
+little-endian ordering and positive one, big-endian.</p>
+</div>
 <div class="section" id="write-pbm-file">
-<h2>3.7. write_pbm_file</h2>
+<h2>3.9. write_pbm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals, int is_ascii);</tt></div>
@@ -594,7 +639,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed
 is.</p>
 </div>
 <div class="section" id="write-pgm-file">
-<h2>3.8. write_pgm_file</h2>
+<h2>3.10. write_pgm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors,</tt></div>
@@ -613,12 +658,12 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed
 is.</p>
 </div>
 <div class="section" id="write-ppm-file">
-<h2>3.9. write_ppm_file</h2>
+<h2>3.11. write_ppm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors, int is_ascii);</tt></div>
 </div>
-<p>Write the contents of a PGM (portable grey map) file.
+<p>Write the contents of a PPM (portable pix map) file.
 Data stored in array <tt class="docutils literal">img_out</tt> are written to file <tt class="docutils literal">f</tt>. This file is
 assumed to be already opened under the name <tt class="docutils literal">img_out_fname</tt>. The
 image data represent an image of size <tt class="docutils literal">x_size</tt> by <tt class="docutils literal">y_size</tt>. x-axis and
@@ -628,13 +673,30 @@ component. Each R-G-B triplet is printed to a separate line.
 If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
 is.</p>
 </div>
+<div class="section" id="write-pfm-file">
+<h2>3.12. write_pfm_file</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,</tt></div>
+<div class="line"><tt class="docutils literal">int x_size, int y_size, int img_type, int endianess);</tt></div>
+</div>
+<p>Write the contents of a PFM (portable float map) file.
+Data stored in array <tt class="docutils literal">img_out</tt> are written to file <tt class="docutils literal">f</tt>. This file is
+assumed to be already opened under the name <tt class="docutils literal">img_out_fname</tt>. The
+image data represent an image of size <tt class="docutils literal">x_size</tt> by <tt class="docutils literal">y_size</tt>. x-axis and
+y-axis scaling factors can be defined by <tt class="docutils literal">x_scale_val</tt> and <tt class="docutils literal">y_scale_val</tt>.
+If <tt class="docutils literal">img_type</tt> is equal to 1, the PFM image encodes RGB (color) information,
+otherwise if it is equal to 0, it stores greyscale information.
+If <tt class="docutils literal">endianess</tt> is negative (-1), the binary data are encoded in little-endian
+ordering, otherwise if <tt class="docutils literal">endianess</tt> is positive (+1), the data follow
+big-endian ordering.</p>
+</div>
 </div>
 <div class="section" id="build-and-setup">
 <h1>4. Build and setup</h1>
 <p>In order to produce the static library, change directory to <tt class="docutils literal">/src</tt> and
 run the Makefile as follows:</p>
 <div class="line-block">
-<div class="line"><tt class="docutils literal">make clean ; make</tt></div>
+<div class="line"><tt class="docutils literal">$ make clean ; make</tt></div>
 </div>
 <p>This will produce the static library <tt class="docutils literal">libpnmio.a</tt> and copy it to the
 <tt class="docutils literal">/lib</tt> subdirectory of the distribution. The executable files for the
@@ -646,17 +708,19 @@ subdirectory.</p>
 <p>Two sample scripts are provided in the <tt class="docutils literal">/test</tt> subdirectory. Change
 directory to <tt class="docutils literal">/test</tt> and run the scripts as follows:</p>
 <div class="line-block">
-<div class="line"><tt class="docutils literal">cd test</tt></div>
-<div class="line"><tt class="docutils literal"><span class="pre">./run-doset.sh</span></tt></div>
-<div class="line"><tt class="docutils literal"><span class="pre">./run-randimg.sh</span></tt></div>
+<div class="line"><tt class="docutils literal">$ cd test</tt></div>
+<div class="line"><tt class="docutils literal">$ <span class="pre">./run-doset.sh</span></tt></div>
+<div class="line"><tt class="docutils literal">$ <span class="pre">./run-randimg.sh</span></tt></div>
 </div>
 <p>PBM, PGM and PPM files can be directly visualized by using freeware image
-viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a> and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>.</p>
+viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a> and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>. The informal/non-standardized PFM
+format was introduced by <a class="reference external" href="http://www.pauldebevec.com/Research/HDR/">Paul Debevec</a>. A PFM viewer (<tt class="docutils literal">HDRView</tt>) can
+be found here: <a class="reference external" href="http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/">http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/</a> .</p>
 </div>
 <div class="section" id="prerequisites">
 <h1>6. Prerequisites</h1>
 <ul>
-<li><p class="first">Standard UNIX-based tools (tested with gcc-4.6.2 on MinGW/x64).</p>
+<li><p class="first">Standard UNIX-based tools (tested with gcc-4.6.2 and gcc-4.8.1 on MinGW/x64).</p>
 <ul class="simple">
 <li>make</li>
 <li>bash (shell)</li>
