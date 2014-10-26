@@ -13,5 +13,5 @@ then
 else
   units=seconds
 fi
-echo "This script has been running $SECONDS $units."
+echo "This script has been running for $SECONDS $units."
 exit 0

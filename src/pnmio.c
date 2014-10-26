@@ -31,11 +31,79 @@
 #define  LITTLE_ENDIAN     -1
 #define  BIG_ENDIAN         1
 #define  GREYSCALE_TYPE     0 /* used for PFM */
-#define  RGB_TYPE           1 /* used for PFM */ 
+#define  RGB_TYPE           1 /* used for PFM */   
 
+
+/* get_pnm_type:
+ * Read the header contents of a PBM/PGM/PPM/PFM file up to the point of 
+ * extracting its type. Valid types for a PNM image are as follows:
+ *   PBM_ASCII     =  1
+ *   PGM_ASCII     =  2
+ *   PPM_ASCII     =  3
+ *   PBM_BINARY    =  4
+ *   PGM_BINARY    =  5
+ *   PPM_BINARY    =  6
+ *   PAM           =  7 
+ *   PFM_RGB       = 16 
+ *   PFM_GREYSCALE = 17
+ * 
+ * The result (pnm_type) is returned.
+ */
+int get_pnm_type(FILE *f)
+{
+  int flag=0;
+  int pnm_type=0;
+  unsigned int i;
+  char magic[MAXLINE];
+  char line[MAXLINE];
+ 
+  /* Read the PNM/PFM file header. */
+  while (fgets(line, MAXLINE, f) != NULL) {
+    flag = 0;
+    for (i = 0; i < strlen(line); i++) {
+      if (isgraph(line[i])) {
+        if ((line[i] == '#') && (flag == 0)) {
+          flag = 1;
+        }
+      }
+    }
+    if (flag == 0) {
+      sscanf(line, "%s", magic);
+      break;
+    }
+  }
+
+  /* NOTE: This part can be written more succinctly, however, 
+   * it is better to have the PNM types decoded explicitly.
+   */
+  if (strcmp(magic, "P1") == 0) {
+    pnm_type = PBM_ASCII;
+  } else if (strcmp(magic, "P2") == 0) {
+    pnm_type = PGM_ASCII;
+  } else if (strcmp(magic, "P3") == 0) {
+    pnm_type = PPM_ASCII;
+  } else if (strcmp(magic, "P4") == 0) {
+    pnm_type = PBM_BINARY;
+  } else if (strcmp(magic, "P5") == 0) {
+    pnm_type = PGM_BINARY;
+  } else if (strcmp(magic, "P6") == 0) {
+    pnm_type = PPM_BINARY;
+  } else if (strcmp(magic, "P7") == 0) {
+    pnm_type = PAM;
+  } else if (strcmp(magic, "PF") == 0) {
+    pnm_type = PFM_RGB;
+  } else if (strcmp(magic, "Pf") == 0) {
+    pnm_type = PFM_GREYSCALE;
+  } else {
+    fprintf(stderr, "Error: Unknown PNM/PFM file; wrong magic number!\n");
+    exit(1);
+  }
+
+  return (pnm_type);
+}
 
 /* read_pbm_header:
- * Read the header contents of a PBM (portable bit map) file.
+ * Read the header contents of a PBM (Portable Binary Map) file.
  * An ASCII PBM image file follows the format:
  * P1
  * <X> <Y>
@@ -43,44 +111,58 @@
  * A binary PBM image file uses P4 instead of P1 and 
  * the data values are represented in binary. 
  * NOTE1: Comment lines start with '#'.
- # NOTE2: < > denote integer values (in decimal).
+ * NOTE2: < > denote integer values (in decimal).
  */
-void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii)
+void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
 {
-  int c;
+  int flag=0;
   int x_val, y_val;
-  char dummy_string[48];
+  unsigned int i;
+  char magic[MAXLINE];
   char line[MAXLINE];
+  int count=0;
 
-  /* Read the magic number string. */
-  fscanf(f, "%s", dummy_string);
-  if (((strcmp(dummy_string, "P1") != 0) && (is_ascii == 1)) ||
-      ((strcmp(dummy_string, "P4") != 0) && (is_ascii == 0))) {
-    fprintf(stderr, "Error: Input file not in PBM format!\n");
-    exit(1);
-  }
-   
-  /* Read the rest of the PBM file header. */
-  while ((c = fgetc(f)) != EOF) {
-    /* Detect a comment line. */
-    if (c == '#') {
-      /* Parse and omit the contents of the comment line. */
-      if (fgets(line, MAXLINE, f) != NULL) {
-        ;  
-	  }
-      break;
-    } else if (isdigit(c)) {
-      ungetc(c, f);
+  /* Read the PBM file header. */
+  while (fgets(line, MAXLINE, f) != NULL) {
+    flag = 0;
+    for (i = 0; i < strlen(line); i++) {
+      if (isgraph(line[i])) {
+        if ((line[i] == '#') && (flag == 0)) {
+          flag = 1;
+        }
+      }
+    }
+    if (flag == 0) {
+      if (count == 0) {
+        count += sscanf(line, "%s %d %d", magic, &x_val, &y_val);
+      } else if (count == 1) {
+        count += sscanf(line, "%d %d", &x_val, &y_val);
+      } else if (count == 2) {
+        count += sscanf(line, "%d", &y_val);
+      }
+    }
+    if (count == 3) {
       break;
     }
   }
-  fscanf(f, "%d %d", &x_val, &y_val);
-  *img_xdim = x_val;
-  *img_ydim = y_val;
+
+  if (strcmp(magic, "P1") == 0) {
+    *is_ascii = 1;
+  } else if (strcmp(magic, "P4") == 0) {
+    *is_ascii = 0;
+  } else {
+    fprintf(stderr, "Error: Input file not in PBM format!\n");
+    exit(1);
+  }
+
+  fprintf(stderr, "Info: magic=%s, x_val=%d, y_val=%d\n",
+    magic, x_val, y_val);
+  *img_xdim   = x_val;
+  *img_ydim   = y_val;
 }
 
 /* read_pgm_header:
- * Read the header contents of a PGM (portable grey map) file.
+ * Read the header contents of a PGM (Portable Grey[scale] Map) file.
  * An ASCII PGM image file follows the format:
  * P2
  * <X> <Y> 
@@ -89,45 +171,61 @@ void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii)
  * A binary PGM image file uses P5 instead of P2 and 
  * the data values are represented in binary. 
  * NOTE1: Comment lines start with '#'.
- # NOTE2: < > denote integer values (in decimal).
+ * NOTE2: < > denote integer values (in decimal).
  */
-void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii)
+void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
 {
-  int c;
+  int flag=0;
   int x_val, y_val, maxcolors_val;
-  char dummy_string[48];
+  unsigned int i;
+  char magic[MAXLINE];
   char line[MAXLINE];
+  int count=0;
 
-  /* Read the magic number string. */
-  fscanf(f, "%s", dummy_string);
-  if (((strcmp(dummy_string, "P2") != 0) && (is_ascii == 1)) ||
-      ((strcmp(dummy_string, "P5") != 0) && (is_ascii == 0))) {
-    fprintf(stderr, "Error: Input file not in PGM format!\n");
-    exit(1);
-  }
-  
-  /* Read the rest of the PPM file header. */
-  while ((c = fgetc(f)) != EOF) {
-    /* Detect a comment line. */
-    if (c == '#') {
-      /* Parse and omit the contents of the comment line. */
-      if (fgets(line, MAXLINE, f) != NULL) {
-        ;  
-	  }
-      break;
-    } else if (isdigit(c)) {
-      ungetc(c, f);
+  /* Read the PGM file header. */
+  while (fgets(line, MAXLINE, f) != NULL) {   
+    flag = 0;
+    for (i = 0; i < strlen(line); i++) {
+      if (isgraph(line[i]) && (flag == 0)) {
+        if ((line[i] == '#') && (flag == 0)) {
+          flag = 1;
+        }
+      }
+    }
+    if (flag == 0) {
+      if (count == 0) {
+        count += sscanf(line, "%s %d %d %d", magic, &x_val, &y_val, &maxcolors_val); 
+      } else if (count == 1) {
+        count += sscanf(line, "%d %d %d", &x_val, &y_val, &maxcolors_val);
+      } else if (count == 2) {
+        count += sscanf(line, "%d %d", &y_val, &maxcolors_val);
+      } else if (count == 3) {
+        count += sscanf(line, "%d", &maxcolors_val);
+      }
+    }
+    if (count == 4) {
       break;
     }
   }
-  fscanf(f, "%d %d %d", &x_val, &y_val, &maxcolors_val);
+
+  if (strcmp(magic, "P2") == 0) {
+    *is_ascii = 1;
+  } else if (strcmp(magic, "P5") == 0) {
+    *is_ascii = 0;
+  } else {
+    fprintf(stderr, "Error: Input file not in PGM format!\n");
+    exit(1);
+  }
+
+  fprintf(stderr, "Info: magic=%s, x_val=%d, y_val=%d, maxcolors_val=%d\n",
+    magic, x_val, y_val, maxcolors_val);
   *img_xdim   = x_val;
   *img_ydim   = y_val;
   *img_colors = maxcolors_val;
 }
 
 /* read_ppm_header:
- * Read the header contents of a PPM (portable pix map) file.
+ * Read the header contents of a PPM (Portable Pix[el] Map) file.
  * An ASCII PPM image file follows the format:
  * P3
  * <X> <Y> 
@@ -138,36 +236,52 @@ void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  * NOTE1: Comment lines start with '#'.
  # NOTE2: < > denote integer values (in decimal).
  */
-void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii)
+void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
 {
-  int c;
+  int flag=0;
   int x_val, y_val, maxcolors_val;
-  char dummy_string[48];
+  unsigned int i;
+  char magic[MAXLINE];
   char line[MAXLINE];
-
-  /* Read the magic number string. */
-  fscanf(f, "%s", dummy_string);
-  if (((strcmp(dummy_string, "P3") != 0) && (is_ascii == 1)) ||
-      ((strcmp(dummy_string, "P6") != 0) && (is_ascii == 0))) {
-    fprintf(stderr, "Error: Input file not in PPM format!\n");
-    exit(1);
-  }
-  
-  /* Read the rest of the PPM file header. */
-  while ((c = fgetc(f)) != EOF) {
-    /* Detect a comment line. */
-    if (c == '#') {
-      /* Parse and omit the contents of the comment line. */
-      if (fgets(line, MAXLINE, f) != NULL) {
-        ;  
-	  }
-      break;
-    } else if (isdigit(c)) {
-      ungetc(c, f);
+  int count=0;
+ 
+  /* Read the PPM file header. */
+  while (fgets(line, MAXLINE, f) != NULL) {
+    flag = 0;
+    for (i = 0; i < strlen(line); i++) {
+      if (isgraph(line[i]) && (flag == 0)) {
+        if ((line[i] == '#') && (flag == 0)) {
+          flag = 1;
+        }
+      }
+    }
+    if (flag == 0) {
+      if (count == 0) {
+        count += sscanf(line, "%s %d %d %d", magic, &x_val, &y_val, &maxcolors_val); 
+      } else if (count == 1) {
+        count += sscanf(line, "%d %d %d", &x_val, &y_val, &maxcolors_val);
+      } else if (count == 2) {
+        count += sscanf(line, "%d %d", &y_val, &maxcolors_val);
+      } else if (count == 3) {
+        count += sscanf(line, "%d", &maxcolors_val);
+      }
+    }
+    if (count == 4) {
       break;
     }
   }
-  fscanf(f, "%d %d %d", &x_val, &y_val, &maxcolors_val);
+
+  if (strcmp(magic, "P3") == 0) {
+    *is_ascii = 1;
+  } else if (strcmp(magic, "P6") == 0) {
+    *is_ascii = 0;
+  } else {
+    fprintf(stderr, "Error: Input file not in PPM format!\n");
+    exit(1);
+  }
+
+  fprintf(stderr, "Info: magic=%s, x_val=%d, y_val=%d, maxcolors_val=%d\n",
+    magic, x_val, y_val, maxcolors_val);
   *img_xdim   = x_val;
   *img_ydim   = y_val;
   *img_colors = maxcolors_val;
@@ -196,51 +310,59 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
       unsigned int s :  1; /* sign     */
     } field;
   } float_type;
-  int c;
+  int flag=0;
   int x_val, y_val;
+  unsigned int i;
   int is_rgb=0, is_greyscale=0;
   float_type aspect_ratio;
-  char dummy_string[48];
+  char magic[MAXLINE];
   char line[MAXLINE];
+  int count=0;
 
-  /* Read the magic number string. */
-  fscanf(f, "%s", dummy_string);
-  if ((strcmp(dummy_string, "PF") != 0) ||
-      (strcmp(dummy_string, "Pf") != 0)) {
-    fprintf(stderr, "Error: Input file not in PFM format!\n");
-    exit(1);
-  }
-
-  if (dummy_string[1] == 'F') {
-    is_rgb = 1;
-  } else if (dummy_string[1] == 'f') {
-    is_greyscale = 1;
-  } else {
-    fprintf(stderr, "Error: Invalid identifier line: %s\n", dummy_string);
-    exit(1);
-  }        
-
-  /* Read the rest of the PFM file header. */
-  while ((c = fgetc(f)) != EOF) {
-    /* Detect a comment line. */
-    if (c == '#') {
-      /* Parse and omit the contents of the comment line. */
-      if (fgets(line, MAXLINE, f) != NULL) {
-        ;  
+  /* Read the PFM file header. */
+  while (fgets(line, MAXLINE, f) != NULL) {
+    flag = 0;
+    for (i = 0; i < strlen(line); i++) {
+      if (isgraph(line[i]) && (flag == 0)) {
+        if ((line[i] == '#') && (flag == 0)) {
+          flag = 1;
+        }
       }
-      break;
-    } else if (isdigit(c)) {
-      ungetc(c, f);
+    }
+    if (flag == 0) {
+      if (count == 0) {
+        count += sscanf(line, "%s %d %d %f", magic, &x_val, &y_val, &aspect_ratio.f); 
+      } else if (count == 1) {
+        count += sscanf(line, "%d %d %f", &x_val, &y_val, &aspect_ratio.f);
+      } else if (count == 2) {
+        count += sscanf(line, "%d %f", &y_val, &aspect_ratio.f);
+      } else if (count == 3) {
+        count += sscanf(line, "%f", &aspect_ratio.f);
+      }
+    }
+    if (count == 4) {
       break;
     }
   }
-  fscanf(f, "%d", &x_val);
-  fscanf(f, "%d", &y_val);
-  fscanf(f, "%f", &aspect_ratio.f);
+
+  if (strcmp(magic, "PF") == 0) {
+    is_rgb       = 1;
+    is_greyscale = 0;
+  } else if (strcmp(magic, "Pf") == 0) {
+    is_greyscale = 0;
+    is_rgb       = 1;    
+  } else {
+    fprintf(stderr, "Error: Input file not in PFM format!\n");
+    exit(1);
+  }      
+
+  fprintf(stderr, "Info: magic=%s, x_val=%d, y_val=%d, aspect_ratio.f=%f\n",
+    magic, x_val, y_val, aspect_ratio.f);
 
   /* FIXME: Aspect ratio different to 1.0 is not yet supported. */
-  if (!floatEqualComparison(aspect_ratio.f, 1.0, 1E-06)) {
-    fprintf(stderr, "Error: Aspect ration different to 1.0 is unsupported!\n");
+  if (!floatEqualComparison(aspect_ratio.f, -1.0, 1E-06) &&
+      !floatEqualComparison(aspect_ratio.f, 1.0, 1E-06)) {
+    fprintf(stderr, "Error: Aspect ratio different to -1.0 or +1.0 is unsupported!\n");
     exit(1);
   }
 
@@ -261,15 +383,21 @@ void read_pbm_data(FILE *f, int *img_in, int is_ascii)
 {
   int i=0, c;
   int lum_val;
+  int k;
   
   /* Read the rest of the PPM file. */
   while ((c = fgetc(f)) != EOF) {
+    ungetc(c, f);
     if (is_ascii == 1) {
       fscanf(f, "%d", &lum_val);
-	} else {
-	  fscanf(f, "%c", &lum_val);
-	}
-    img_in[i++] = lum_val;
+      img_in[i++] = lum_val;
+    } else {
+      lum_val = fgetc(f);
+      /* Decode the image contents byte-by-byte. */
+      for (k = 0; k < 8; k++) {
+        img_in[i++] = (lum_val >> (7-k)) & 0x1;
+      }        
+    }
   } 
   fclose(f);
 }
@@ -281,14 +409,16 @@ void read_pgm_data(FILE *f, int *img_in, int is_ascii)
 {
   int i=0, c;
   int lum_val;
+  int k;
   
   /* Read the rest of the PPM file. */
   while ((c = fgetc(f)) != EOF) {
+    ungetc(c, f);
     if (is_ascii == 1) {
-	  fscanf(f, "%d", &lum_val);
-	} else {
-	  fscanf(f, "%c", &lum_val);
-	}
+	    fscanf(f, "%d", &lum_val);
+	  } else {
+      lum_val = fgetc(f);
+    }        
     img_in[i++] = lum_val;
   } 
   fclose(f);
@@ -304,11 +434,14 @@ void read_ppm_data(FILE *f, int *img_in, int is_ascii)
     
   /* Read the rest of the PPM file. */
   while ((c = fgetc(f)) != EOF) {
+    ungetc(c, f);
     if (is_ascii == 1) {
       fscanf(f, "%d %d %d", &r_val, &g_val, &b_val);
-	} else {
-      fscanf(f, "%c%c%c", &r_val, &g_val, &b_val);
-	}
+    } else {
+      r_val = fgetc(f);
+      g_val = fgetc(f);
+      b_val = fgetc(f);
+    }
     img_in[i++] = r_val;
     img_in[i++] = g_val;
     img_in[i++] = b_val;
@@ -371,18 +504,16 @@ void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,
   /* Write the image data. */
   for (i = 0; i < y_scaled_size; i++) {
     for (j = 0; j < x_scaled_size; j+=step) {
-	  if (is_ascii == 1) {
+	    if (is_ascii == 1) {
         fprintf(f, "%d ", img_out[i*x_scaled_size+j]);
-	  } else {
-	    temp = 0;
-		for (k = 0; k < 8; k++) {
+	    } else {
+	      temp = 0;
+		    for (k = 0; k < 8; k++) {
           v = img_out[i*x_scaled_size+j+k];
-//		  temp |= (v << k) & 0x1;
-		  temp |= (v << (7-k));
-		}
-//        fprintf(f, "%c", img_out[i*x_scaled_size+j]);
+          temp |= (v << (7-k));
+		    }
         fprintf(f, "%c", temp);
-	  }
+      }
       if (((i*x_scaled_size+j) % linevals) == (linevals-1)) {
         fprintf(f, "\n");
       }
@@ -418,14 +549,14 @@ void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,
   /* Write the image data. */
   for (i = 0; i < y_scaled_size; i++) {
     for (j = 0; j < x_scaled_size; j++) {
-	  if (is_ascii == 1) {
+      if (is_ascii == 1) {
         fprintf(f, "%d ", img_out[i*x_scaled_size+j]);
         if (((i*x_scaled_size+j) % linevals) == (linevals-1)) {
           fprintf(f, "\n");
-		}
-	  } else {
+        }
+      } else {
         fprintf(f, "%c", img_out[i*x_scaled_size+j]);
-	  }
+      }
     }
   } 
   fclose(f);
@@ -458,7 +589,7 @@ void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,
   /* Write the image data. */
   for (i = 0; i < y_scaled_size; i++) {
     for (j = 0; j < x_scaled_size; j++) {
-	  if (is_ascii == 1) {
+      if (is_ascii == 1) {
         fprintf(f, "%d %d %d ", 
           img_out[3*(i*x_scaled_size+j)+0], 
           img_out[3*(i*x_scaled_size+j)+1], 
@@ -471,7 +602,7 @@ void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,
           img_out[3*(i*x_scaled_size+j)+0], 
           img_out[3*(i*x_scaled_size+j)+1], 
           img_out[3*(i*x_scaled_size+j)+2]);
-	  }
+      }
     }
   }  
   fclose(f);
@@ -485,10 +616,8 @@ void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,
   int img_type, int endianess)
 {
   int i, j, x_scaled_size, y_scaled_size;
-//  int swap = (endianess == 1) ? 1 : 0;
-  int swap = 0;
+  int swap = (endianess == 1) ? 1 : 0;
   float fendian = endianess;
-  unsigned char buffer[sizeof(float)];
   
   x_scaled_size = x_size;
   y_scaled_size = y_size;
@@ -591,4 +720,32 @@ int floatEqualComparison(float A, float B, float maxRelDiff)
 float frand(void)
 {
   return rand() / (RAND_MAX + 1.0);
+}
+
+/* log2ceil:
+ * Function to calculate the ceiling of the binary logarithm of a given positive 
+ * integer n.
+ */
+int log2ceil(int inpval)
+{
+  int max = 1; // exp=0 => max=2^0=1
+  unsigned int logval = 0;
+
+  if (inpval < 0) {
+    fprintf(stderr, "Error: Result of log2 computation is NAN.\n");
+    exit(1);
+  } else if (inpval == 0) {
+    fprintf(stderr, "Error: Result of log2 computation is MINUS_INFINITY.\n");
+    exit(1);
+  } else {
+    // log computation loop
+    while (max < inpval) {
+      // increment exponent
+      logval = logval + 1;
+      //  max = 2^logval
+      max = max * 2;
+    }
+  }
+  // exponent that gives (2^logval) >= inpval
+  return (logval);
 }

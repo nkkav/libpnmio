@@ -11,11 +11,21 @@
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
-| **Release Date**  | 25 October 2014                                          |
+| **Release Date**  | 26 October 2014                                          |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.2.1                                                    |
+| **Version**       | 1.2.2                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
++-------------------+----------------------------------------------------------+
+|        **v1.2.2** | 2014-10-26                                               |
+|                   |                                                          |
+|                   | - New test application, ``rnwimg`` for reading and       |
+|                   |   writing PBM, PGM, PPM and PFM images.                  |
+|                   | - Numerous bug fixes to ``read_p*m_header`` routines.    |
+|                   | - Added ``get_pnm_type``.                                |
+|                   | - Removed ``squares.binary.pgm`` (all-black image).      |
+|                   | - Removed ``feep.ascii.ppm`` (incomplete image).         |
+|                   | - PFM reading still needs work.                          |
 +-------------------+----------------------------------------------------------+
 |        **v1.2.1** | 2014-10-25                                               |
 |                   |                                                          |
@@ -126,11 +136,16 @@ The ``libpnmio`` distribution includes the following files:
 +-----------------------+------------------------------------------------------+
 | randimg.c             | Random PBM/PGM/PPM/PFM image generator.              |
 +-----------------------+------------------------------------------------------+
+| rnwimg.c              | Reads and writes PBM/PGM/PPM/PFM images for          |
+|                       | exercising the ``libpnmio`` API.                     |
++-----------------------+------------------------------------------------------+
 | /test                 | Test script directory                                |
 +-----------------------+------------------------------------------------------+
 | run-doset.sh          | Bash script for running the Mandelbrot set example.  |
 +-----------------------+------------------------------------------------------+
 | run-randimg.sh        | Bash script for running the random image generator.  |
++-----------------------+------------------------------------------------------+
+| run-rnwimg.sh         | Bash script for running the read-and-write API tests.|
 +-----------------------+------------------------------------------------------+
 
 The original sources for the images included in the ``/libpnmio/images`` 
@@ -392,6 +407,7 @@ directory to ``/test`` and run the scripts as follows:
 | ``$ cd test``
 | ``$ ./run-doset.sh``
 | ``$ ./run-randimg.sh``
+| ``$ ./run-rnwimg.sh``
 
 PBM, PGM and PPM files can be directly visualized by using freeware image 
 viewers such as XnView_ and Imagine_. The informal/non-standardized PFM 

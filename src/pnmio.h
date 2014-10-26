@@ -25,6 +25,18 @@
 
 #include <stdio.h>
 
+/* PNM/PFM image data file format definitions. */
+#define PBM_ASCII         1
+#define PGM_ASCII         2
+#define PPM_ASCII         3
+#define PBM_BINARY        4
+#define PGM_BINARY        5
+#define PPM_BINARY        6
+#define PAM               7 /* reserved */
+                            /* 8-15: reserved */
+#define PFM_RGB          16 /* F */
+#define PFM_GREYSCALE    17 /* f */
+
 #define IS_BIGENDIAN(x)   ((*(char*)&x) == 0)
 #define IS_LITTLE_ENDIAN  (1 == *(unsigned char *)&(const int){1})
 #ifndef FALSE
@@ -35,9 +47,10 @@
 #endif
 
 
-void read_pbm_header(FILE *, int *, int *, int);
-void read_pgm_header(FILE *, int *, int *, int *, int);
-void read_ppm_header(FILE *, int *, int *, int *, int);
+int  get_pnm_type(FILE *);
+void read_pbm_header(FILE *, int *, int *, int *);
+void read_pgm_header(FILE *, int *, int *, int *, int *);
+void read_ppm_header(FILE *, int *, int *, int *, int *);
 void read_pfm_header(FILE *, int *, int *, int *, int *);
 void read_pbm_data(FILE *, int *, int);
 void read_pgm_data(FILE *, int *, int);
@@ -52,5 +65,6 @@ int   ReadFloat(FILE *, float *, int);
 int   WriteFloat(FILE *, float *, int);
 int   floatEqualComparison(float, float, float);
 float frand(void);
+int   log2ceil(int);
 
 #endif /* PNMIO_H */

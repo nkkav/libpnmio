@@ -360,13 +360,26 @@ ul.auto-toc {
 <td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
 </tr>
 <tr><td><strong>Release Date</strong></td>
-<td>25 October 2014</td>
+<td>26 October 2014</td>
 </tr>
 <tr><td><strong>Version</strong></td>
-<td>1.2.1</td>
+<td>1.2.2</td>
 </tr>
 <tr><td><strong>Rev. history</strong></td>
 <td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.2.2</strong></td>
+<td><p class="first">2014-10-26</p>
+<ul class="last simple">
+<li>New test application, <tt class="docutils literal">rnwimg</tt> for reading and
+writing PBM, PGM, PPM and PFM images.</li>
+<li>Numerous bug fixes to <tt class="docutils literal">read_p*m_header</tt> routines.</li>
+<li>Added <tt class="docutils literal">get_pnm_type</tt>.</li>
+<li>Removed <tt class="docutils literal">squares.binary.pgm</tt> (all-black image).</li>
+<li>Removed <tt class="docutils literal">feep.ascii.ppm</tt> (incomplete image).</li>
+<li>PFM reading still needs work.</li>
+</ul>
+</td>
 </tr>
 <tr><td><strong>v1.2.1</strong></td>
 <td><p class="first">2014-10-25</p>
@@ -487,6 +500,10 @@ set.</td>
 <tr><td>randimg.c</td>
 <td>Random PBM/PGM/PPM/PFM image generator.</td>
 </tr>
+<tr><td>rnwimg.c</td>
+<td>Reads and writes PBM/PGM/PPM/PFM images for
+exercising the <tt class="docutils literal">libpnmio</tt> API.</td>
+</tr>
 <tr><td>/test</td>
 <td>Test script directory</td>
 </tr>
@@ -495,6 +512,9 @@ set.</td>
 </tr>
 <tr><td>run-randimg.sh</td>
 <td>Bash script for running the random image generator.</td>
+</tr>
+<tr><td>run-rnwimg.sh</td>
+<td>Bash script for running the read-and-write API tests.</td>
 </tr>
 </tbody>
 </table>
@@ -744,6 +764,7 @@ directory to <tt class="docutils literal">/test</tt> and run the scripts as foll
 <div class="line"><tt class="docutils literal">$ cd test</tt></div>
 <div class="line"><tt class="docutils literal">$ <span class="pre">./run-doset.sh</span></tt></div>
 <div class="line"><tt class="docutils literal">$ <span class="pre">./run-randimg.sh</span></tt></div>
+<div class="line"><tt class="docutils literal">$ <span class="pre">./run-rnwimg.sh</span></tt></div>
 </div>
 <p>PBM, PGM and PPM files can be directly visualized by using freeware image
 viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a> and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>. The informal/non-standardized PFM
