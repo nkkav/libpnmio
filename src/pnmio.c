@@ -369,7 +369,7 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
   *img_xdim   = x_val;
   *img_ydim   = y_val;
   *img_type   = is_rgb & ~is_greyscale;
-  if (aspect_ratio.field.s > 0) {
+  if (aspect_ratio.f > 0.0) {
     *endianess = 1;
   } else {
     *endianess = -1;
@@ -455,11 +455,12 @@ void read_ppm_data(FILE *f, int *img_in, int is_ascii)
 void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess)
 {
   int i=0, c;
-  int swap = (endianess == 1) ? 1 : 0;
+  int swap = (endianess == 1) ? 0 : 1;
   float r_val, g_val, b_val;
     
   /* Read the rest of the PPM file. */
   while ((c = fgetc(f)) != EOF) {
+    ungetc(c, f);   
     /* Read a possibly byte-swapped float. */
     if (img_type == RGB_TYPE) {
       ReadFloat(f, &r_val, swap);
@@ -616,8 +617,8 @@ void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,
   int img_type, int endianess)
 {
   int i, j, x_scaled_size, y_scaled_size;
-  int swap = (endianess == 1) ? 1 : 0;
-  float fendian = endianess;
+  int swap = (endianess == 1) ? 0 : 1;
+  float fendian = (endianess == 1) ? +1.0 : -1.0;
   
   x_scaled_size = x_size;
   y_scaled_size = y_size;
@@ -659,7 +660,7 @@ int ReadFloat(FILE *fptr, float *f, int swap)
 {
   unsigned char *cptr, tmp;
 
-  if (fread(f, 4, 1, fptr) != 1) {
+  if (fread(f, sizeof(float), 1, fptr) != 1) {
     return (FALSE);
   }   
   if (swap) {
