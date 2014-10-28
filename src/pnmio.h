@@ -47,24 +47,36 @@
 #endif
 
 
-int  get_pnm_type(FILE *);
-void read_pbm_header(FILE *, int *, int *, int *);
-void read_pgm_header(FILE *, int *, int *, int *, int *);
-void read_ppm_header(FILE *, int *, int *, int *, int *);
-void read_pfm_header(FILE *, int *, int *, int *, int *);
-void read_pbm_data(FILE *, int *, int);
-void read_pgm_data(FILE *, int *, int);
-void read_ppm_data(FILE *, int *, int);
-void read_pfm_data(FILE *, float *, int, int);
-void write_pbm_file(FILE *, int *, char *, int, int, int, int, int, int);
-void write_pgm_file(FILE *f, int *, char *, int, int, int, int, int, int, int);
-void write_ppm_file(FILE *, int *, char *, int, int, int, int, int, int);
-void write_pfm_file(FILE *, float *, char *, int, int, int, int);
+/* PNM/PFM API. */
+int  get_pnm_type(FILE *f);
+void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii);
+void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, 
+       int *is_ascii);
+void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, 
+       int *is_ascii);
+void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, 
+       int *endianess);
+void read_pbm_data(FILE *f, int *img_in, int is_ascii);
+void read_pgm_data(FILE *f, int *img_in, int is_ascii);
+void read_ppm_data(FILE *f, int *img_in, int is_ascii);
+void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess);
+void write_pbm_file(FILE *f, int *img_out, char *img_out_fname, 
+       int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals, 
+       int is_ascii);
+void write_pgm_file(FILE *f, int *img_out, char *img_out_fname, 
+       int x_size, int y_size, int x_scale_val, int y_scale_val, 
+       int img_colors, int linevals, int is_ascii);
+void write_ppm_file(FILE *f, int *img_out, char *img_out_fname, 
+       int x_size, int y_size, int x_scale_val, int y_scale_val, 
+       int img_colors, int is_ascii);
+void write_pfm_file(FILE *f, float *img_out, char *img_out_fname, 
+       int x_size, int y_size, int img_type, int endianess);
 
-int   ReadFloat(FILE *, float *, int);
-int   WriteFloat(FILE *, float *, int);
-int   floatEqualComparison(float, float, float);
+/* Helper/auxiliary functions. */
+int   ReadFloat(FILE *fptr, float *f, int swap);
+int   WriteFloat(FILE *fptr, float *f, int swap);
+int   floatEqualComparison(float A, float B, float maxRelDiff);
 float frand(void);
-int   log2ceil(int);
+int   log2ceil(int inpval);
 
 #endif /* PNMIO_H */
