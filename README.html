@@ -360,13 +360,19 @@ ul.auto-toc {
 <td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
 </tr>
 <tr><td><strong>Release Date</strong></td>
-<td>26 October 2014</td>
+<td>28 October 2014</td>
 </tr>
 <tr><td><strong>Version</strong></td>
-<td>1.2.2</td>
+<td>1.2.3</td>
 </tr>
 <tr><td><strong>Rev. history</strong></td>
 <td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.2.3</strong></td>
+<td><p class="first">2014-10-28</p>
+<p class="last">Documentation update; add <tt class="docutils literal">get_pnm_type</tt> and reference
+to the IrfanView image viewer.</p>
+</td>
 </tr>
 <tr><td><strong>v1.2.2</strong></td>
 <td><p class="first">2014-10-26</p>
@@ -543,8 +549,28 @@ directory are the following:</p>
 <h1>3. API description</h1>
 <p>This section summarizes the intended functionality of the functions supported
 by the <tt class="docutils literal">libpnmio</tt> application programming interface.</p>
+<div class="section" id="get-pnm-type">
+<h2>3.1 get_pnm_type</h2>
+<div class="line-block">
+<div class="line"><tt class="docutils literal">int get_pnm_type(FILE *f);</tt></div>
+</div>
+<p>Read the header contents of a PBM/PGM/PPM/PFM file up to the point of extracting
+its type. Valid types for a PNM image are as follows:</p>
+<ul class="simple">
+<li><tt class="docutils literal">PBM_ASCII</tt>     =  1</li>
+<li><tt class="docutils literal">PGM_ASCII</tt>     =  2</li>
+<li><tt class="docutils literal">PPM_ASCII</tt>     =  3</li>
+<li><tt class="docutils literal">PBM_BINARY</tt>    =  4</li>
+<li><tt class="docutils literal">PGM_BINARY</tt>    =  5</li>
+<li><tt class="docutils literal">PPM_BINARY</tt>    =  6</li>
+<li><tt class="docutils literal">PAM</tt>           =  7 (unimplemented)</li>
+<li><tt class="docutils literal">PFM_RGB</tt>       = 16</li>
+<li><tt class="docutils literal">PFM_GREYSCALE</tt> = 17</li>
+</ul>
+<p>The result (pnm_type) is returned.</p>
+</div>
 <div class="section" id="read-pbm-header">
-<h2>3.1. read_pbm_header</h2>
+<h2>3.2 read_pbm_header</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);</tt></div>
 </div>
@@ -565,7 +591,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-pgm-header">
-<h2>3.2. read_pgm_header</h2>
+<h2>3.3 read_pgm_header</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
 </div>
@@ -587,7 +613,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-ppm-header">
-<h2>3.3. read_ppm_header</h2>
+<h2>3.4 read_ppm_header</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
 </div>
@@ -610,7 +636,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-pfm-header">
-<h2>3.4. read_pfm_header</h2>
+<h2>3.5 read_pfm_header</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);</tt></div>
 </div>
@@ -635,7 +661,7 @@ ordering, otherwise if <tt class="docutils literal">endianess</tt> is positive (
 big-endian ordering.</p>
 </div>
 <div class="section" id="read-pbm-data">
-<h2>3.5. read_pbm_data</h2>
+<h2>3.6 read_pbm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_pgm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
 </div>
@@ -645,7 +671,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-pgm-data">
-<h2>3.6. read_pgm_data</h2>
+<h2>3.7 read_pgm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_pgm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
 </div>
@@ -655,7 +681,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-ppm-data">
-<h2>3.7. read_ppm_data</h2>
+<h2>3.8 read_ppm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_ppm_data(FILE *f, int *img_in, int is_ascii);</tt></div>
 </div>
@@ -665,7 +691,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed
 is.</p>
 </div>
 <div class="section" id="read-pfm-data">
-<h2>3.8. read_pfm_data</h2>
+<h2>3.9 read_pfm_data</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void read_ppm_data(FILE *f, float *img_in, int img_type, int endianess);</tt></div>
 </div>
@@ -676,7 +702,7 @@ image data. If <tt class="docutils literal">img_type</tt> is 1, color/RGB image 
 little-endian ordering and positive one, big-endian.</p>
 </div>
 <div class="section" id="write-pbm-file">
-<h2>3.9. write_pbm_file</h2>
+<h2>3.10 write_pbm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals, int is_ascii);</tt></div>
@@ -692,7 +718,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed
 is.</p>
 </div>
 <div class="section" id="write-pgm-file">
-<h2>3.10. write_pgm_file</h2>
+<h2>3.11 write_pgm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors,</tt></div>
@@ -711,7 +737,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed
 is.</p>
 </div>
 <div class="section" id="write-ppm-file">
-<h2>3.11. write_ppm_file</h2>
+<h2>3.12 write_ppm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors, int is_ascii);</tt></div>
@@ -727,7 +753,7 @@ If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed
 is.</p>
 </div>
 <div class="section" id="write-pfm-file">
-<h2>3.12. write_pfm_file</h2>
+<h2>3.13 write_pfm_file</h2>
 <div class="line-block">
 <div class="line"><tt class="docutils literal">void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,</tt></div>
 <div class="line"><tt class="docutils literal">int x_size, int y_size, int img_type, int endianess);</tt></div>
@@ -767,9 +793,10 @@ directory to <tt class="docutils literal">/test</tt> and run the scripts as foll
 <div class="line"><tt class="docutils literal">$ <span class="pre">./run-rnwimg.sh</span></tt></div>
 </div>
 <p>PBM, PGM and PPM files can be directly visualized by using freeware image
-viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a> and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>. The informal/non-standardized PFM
-format was introduced by <a class="reference external" href="http://www.pauldebevec.com/Research/HDR/">Paul Debevec</a>. A PFM viewer (<tt class="docutils literal">HDRView</tt>) can
-be found here: <a class="reference external" href="http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/">http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/</a> .</p>
+viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a>, <a class="reference external" href="http://www.irfanview.com">IrfanView</a> (non-commercial use only) and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>. The
+informal/non-standardized PFM format was introduced by <a class="reference external" href="http://www.pauldebevec.com/Research/HDR/">Paul Debevec</a>. A PFM
+viewer (<tt class="docutils literal">HDRView</tt>) can be found here:
+<a class="reference external" href="http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/">http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/</a> .</p>
 </div>
 <div class="section" id="prerequisites">
 <h1>6. Prerequisites</h1>

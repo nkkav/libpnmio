@@ -11,11 +11,16 @@
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
-| **Release Date**  | 26 October 2014                                          |
+| **Release Date**  | 28 October 2014                                          |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.2.2                                                    |
+| **Version**       | 1.2.3                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
++-------------------+----------------------------------------------------------+
+|        **v1.2.3** | 2014-10-28                                               |
+|                   |                                                          |
+|                   | Documentation update; add ``get_pnm_type`` and reference |
+|                   | to the IrfanView image viewer.                           |
 +-------------------+----------------------------------------------------------+
 |        **v1.2.2** | 2014-10-26                                               |
 |                   |                                                          |
@@ -62,6 +67,7 @@
 .. _PFM: http://netpbm.sourceforge.net/doc/pfm.html
 .. _PFM page by Paul Bourke: http://paulbourke.net/dataformats/pbmhdr/
 .. _Paul Debevec: http://www.pauldebevec.com/Research/HDR/
+.. _IrfanView: http://www.irfanview.com
 
 
 1. Introduction
@@ -174,8 +180,28 @@ directory are the following:
 This section summarizes the intended functionality of the functions supported 
 by the ``libpnmio`` application programming interface.
 
-3.1. read_pbm_header
---------------------
+3.1 get_pnm_type
+----------------
+
+| ``int get_pnm_type(FILE *f);``
+
+Read the header contents of a PBM/PGM/PPM/PFM file up to the point of extracting 
+its type. Valid types for a PNM image are as follows:
+
+- ``PBM_ASCII``     =  1
+- ``PGM_ASCII``     =  2
+- ``PPM_ASCII``     =  3
+- ``PBM_BINARY``    =  4
+- ``PGM_BINARY``    =  5
+- ``PPM_BINARY``    =  6
+- ``PAM``           =  7 (unimplemented)
+- ``PFM_RGB``       = 16 
+- ``PFM_GREYSCALE`` = 17
+
+The result (pnm_type) is returned.
+
+3.2 read_pbm_header
+-------------------
 
 | ``void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);``
 
@@ -197,9 +223,8 @@ take only the 0 and 1 values.
 If ``is_ascii`` is 1, an ASCII PBM file is assumed; otherwise a binary PBM file 
 is.
 
-
-3.2. read_pgm_header
---------------------
+3.3 read_pgm_header
+-------------------
 
 | ``read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
@@ -222,8 +247,8 @@ and ``levels``, respectively.
 If ``is_ascii`` is 1, an ASCII PGM file is assumed; otherwise a binary PGM file 
 is.
 
-3.3. read_ppm_header
---------------------
+3.4 read_ppm_header
+-------------------
 
 | ``void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
@@ -247,8 +272,8 @@ value from 0 to levels.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
-3.4. read_pfm_header
---------------------
+3.5 read_pfm_header
+-------------------
 
 | ``void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);``
 
@@ -274,8 +299,8 @@ If ``endianess`` is negative (-1), the binary data are encoded in little-endian
 ordering, otherwise if ``endianess`` is positive (+1), the data follow 
 big-endian ordering.
 
-3.5. read_pbm_data
-------------------
+3.6 read_pbm_data
+-----------------
 
 | ``void read_pgm_data(FILE *f, int *img_in, int is_ascii);`` 
 
@@ -284,8 +309,8 @@ Read the data contents of a PBM (portable bit map) file.
 If ``is_ascii`` is 1, an ASCII PBM file is assumed; otherwise a binary PBM file 
 is.
 
-3.6. read_pgm_data
-------------------
+3.7 read_pgm_data
+-----------------
 
 | ``void read_pgm_data(FILE *f, int *img_in, int is_ascii);``
 
@@ -294,8 +319,8 @@ Read the data contents of a PGM (portable grey map) file.
 If ``is_ascii`` is 1, an ASCII PGM file is assumed; otherwise a binary PGM file 
 is.
 
-3.7. read_ppm_data
-------------------
+3.8 read_ppm_data
+-----------------
 
 | ``void read_ppm_data(FILE *f, int *img_in, int is_ascii);``
 
@@ -304,8 +329,8 @@ Read the data contents of a PPM (portable pix map) file.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
-3.8. read_pfm_data
-------------------
+3.9 read_pfm_data
+-----------------
 
 | ``void read_ppm_data(FILE *f, float *img_in, int img_type, int endianess);``
 
@@ -315,7 +340,7 @@ image data. If ``img_type`` is 1, color/RGB image data are assumed; otherwise
 (0) the image data are in greyscale. A negative ``endianess`` indicates 
 little-endian ordering and positive one, big-endian.
 
-3.9. write_pbm_file
+3.10 write_pbm_file
 -------------------
 
 | ``void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,`` 
@@ -331,8 +356,8 @@ reading of the PBM file data.
 If ``is_ascii`` is 1, an ASCII PBM file is assumed; otherwise a binary PBM file 
 is.
 
-3.10. write_pgm_file
---------------------
+3.11 write_pgm_file
+-------------------
 
 | ``void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors,``
@@ -350,8 +375,8 @@ reading of the PGM file data.
 If ``is_ascii`` is 1, an ASCII PGM file is assumed; otherwise a binary PGM file 
 is.
 
-3.11. write_ppm_file
---------------------
+3.12 write_ppm_file
+-------------------
 
 | ``void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors, int is_ascii);``
@@ -366,8 +391,8 @@ component. Each R-G-B triplet is printed to a separate line.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
-3.12. write_pfm_file
---------------------
+3.13 write_pfm_file
+-------------------
 
 | ``void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,`` 
 | ``int x_size, int y_size, int img_type, int endianess);``
@@ -410,9 +435,10 @@ directory to ``/test`` and run the scripts as follows:
 | ``$ ./run-rnwimg.sh``
 
 PBM, PGM and PPM files can be directly visualized by using freeware image 
-viewers such as XnView_ and Imagine_. The informal/non-standardized PFM 
-format was introduced by `Paul Debevec`_. A PFM viewer (``HDRView``) can 
-be found here: http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/ .
+viewers such as XnView_, IrfanView_ (non-commercial use only) and Imagine_. The 
+informal/non-standardized PFM format was introduced by `Paul Debevec`_. A PFM 
+viewer (``HDRView``) can be found here: 
+http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview/ .
 
 
 6. Prerequisites
