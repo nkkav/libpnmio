@@ -11,20 +11,24 @@ libpnmio.a: pnmio.o
 	$(AR) -q libpnmio$(LIBSFX) pnmio.o
 	chmod 755 libpnmio$(LIBSFX)
 	$(RANLIB) libpnmio$(LIBSFX)
+	rm -rf ../lib
+	mkdir ../lib
+	rm -rf ../bin
+	mkdir ../bin
 	cp -f libpnmio$(LIBSFX) ../lib
 	rm -f libpnmio$(LIBSFX)
 
 randimg$(EXE): randimg.o
 	$(CC) randimg.o ../lib/libpnmio.a $(LFLAGS) -o randimg$(EXE)
-	mv randimg$(EXE) ../bin
+	mv randimg$(EXE) ../bin/randimg$(EXE)
 
 doset$(EXE): doset.o
 	$(CC) doset.o ../lib/libpnmio.a $(LFLAGS) -o doset$(EXE)
-	mv doset$(EXE) ../bin
+	mv doset$(EXE) ../bin/doset$(EXE)
 
 rnwimg$(EXE): rnwimg.o
 	$(CC) rnwimg.o ../lib/libpnmio.a $(LFLAGS) -o rnwimg$(EXE)
-	mv rnwimg$(EXE) ../bin
+	mv rnwimg$(EXE) ../bin/rnwimg$(EXE)
 
 pnmio.o: pnmio.c pnmio.h
 	$(CC) $(CFLAGS) -c pnmio.c $(INCLUDES)
