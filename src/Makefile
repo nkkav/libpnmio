@@ -5,7 +5,7 @@ CFLAGS = -std=c99 -g -Wall -Wextra -pedantic
 EXE = .exe
 LIBSFX = .a
 
-all: libpnmio$(LIBSFX) randimg$(EXE) doset$(EXE) rnwimg$(EXE)
+all: libpnmio$(LIBSFX) randimg$(EXE) doset$(EXE) rnwimg$(EXE) sftbyvec$(EXE)
 
 libpnmio.a: pnmio.o
 	$(AR) -q libpnmio$(LIBSFX) pnmio.o
@@ -26,6 +26,10 @@ rnwimg$(EXE): rnwimg.o
 	$(CC) rnwimg.o ../lib/libpnmio.a $(LFLAGS) -o rnwimg$(EXE)
 	mv rnwimg$(EXE) ../bin
 
+sftbyvec$(EXE): sftbyvec.o
+	$(CC) sftbyvec.o ../lib/libpnmio.a $(LFLAGS) -o sftbyvec$(EXE)
+	mv sftbyvec$(EXE) ../bin
+
 pnmio.o: pnmio.c pnmio.h
 	$(CC) $(CFLAGS) -c pnmio.c $(INCLUDES)
 
@@ -37,9 +41,13 @@ doset.o: doset.c pnmio.h
 
 rnwimg.o: rnwimg.c pnmio.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c rnwimg.c
+
+sftbyvec.o: sftbyvec.c pnmio.h
+	$(CC) $(CFLAGS) $(INCLUDES) -c sftbyvec.c
    
 tidy:
 	rm -f *.o
 
 clean:
-	rm -f *.o ../lib/libpnmio$(LIBSFX) ../bin/randimg$(EXE) ../bin/doset$(EXE) ../bin/rnwimg$(EXE)
+	rm -f *.o ../lib/libpnmio$(LIBSFX) ../bin/randimg$(EXE) ../bin/doset$(EXE) ../bin/rnwimg$(EXE) ../bin/sftbyvec$(EXE)
+

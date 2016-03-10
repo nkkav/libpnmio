@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
 <title>libpnmio user manual</title>
 <style type="text/css">
 
 /*
 :Author: David Goodger (goodger@python.org)
-:Id: $Id$
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
@@ -351,7 +351,7 @@ ul.auto-toc {
 <td>libpnmio (I/O PNM library)</td>
 </tr>
 <tr><td><strong>Author</strong></td>
-<td>Nikolaos Kavvadias 2012, 2013, 2014</td>
+<td>Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016</td>
 </tr>
 <tr><td><strong>Contact</strong></td>
 <td><a class="reference external" href="mailto:nikos&#64;nkavvadias.com">nikos&#64;nkavvadias.com</a></td>
@@ -360,13 +360,18 @@ ul.auto-toc {
 <td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
 </tr>
 <tr><td><strong>Release Date</strong></td>
-<td>28 October 2014</td>
+<td>10 March 2016</td>
 </tr>
 <tr><td><strong>Version</strong></td>
-<td>1.2.5</td>
+<td>1.2.6</td>
 </tr>
 <tr><td><strong>Rev. history</strong></td>
 <td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.2.6</strong></td>
+<td><p class="first">2016-03-10</p>
+<p class="last">Add sftbyvec.c, related changes.</p>
+</td>
 </tr>
 <tr><td><strong>v1.2.5</strong></td>
 <td><p class="first">2014-10-28</p>
@@ -520,6 +525,10 @@ set.</td>
 <td>Reads and writes PBM/PGM/PPM/PFM images for
 exercising the <tt class="docutils literal">libpnmio</tt> API.</td>
 </tr>
+<tr><td>sftbyvec.c</td>
+<td>Read an input ASCII PGM image, shift its contents by
+a given vector and then writes it back</td>
+</tr>
 <tr><td>/test</td>
 <td>Test script directory</td>
 </tr>
@@ -531,6 +540,9 @@ exercising the <tt class="docutils literal">libpnmio</tt> API.</td>
 </tr>
 <tr><td>run-rnwimg.sh</td>
 <td>Bash script for running the read-and-write API tests.</td>
+</tr>
+<tr><td>run-sftbyvec.sh</td>
+<td>Bash script for running the shift-by-vector tests.</td>
 </tr>
 </tbody>
 </table>
@@ -801,6 +813,7 @@ directory to <tt class="docutils literal">/test</tt> and run the scripts as foll
 <div class="line"><tt class="docutils literal">$ <span class="pre">./run-doset.sh</span></tt></div>
 <div class="line"><tt class="docutils literal">$ <span class="pre">./run-randimg.sh</span></tt></div>
 <div class="line"><tt class="docutils literal">$ <span class="pre">./run-rnwimg.sh</span></tt></div>
+<div class="line"><tt class="docutils literal">$ <span class="pre">./run-sftbyvec.sh</span></tt></div>
 </div>
 <p>PBM, PGM and PPM files can be directly visualized by using freeware image
 viewers such as <a class="reference external" href="http://www.xnview.com">XnView</a>, <a class="reference external" href="http://www.irfanview.com">IrfanView</a> (non-commercial use only) and <a class="reference external" href="http://www.nyam.pe.kr/">Imagine</a>. The
@@ -821,18 +834,6 @@ viewer (<tt class="docutils literal">HDRView</tt>) can be found here:
 environments of sufficient completeness.</p>
 </li>
 </ul>
-</div>
-<div class="section" id="contact">
-<h1>7. Contact</h1>
-<p>You may contact me at:</p>
-<div class="line-block">
-<div class="line">Nikolaos Kavvadias &lt;<a class="reference external" href="mailto:nikos&#64;nkavvadias.com">nikos&#64;nkavvadias.com</a>&gt;</div>
-<div class="line">Independent Consultant</div>
-<div class="line"><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></div>
-<div class="line">Kornarou 12 Rd,</div>
-<div class="line">35100 Lamia, Fthiotis</div>
-<div class="line">Greece</div>
-</div>
 </div>
 </div>
 </body>

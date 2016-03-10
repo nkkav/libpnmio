@@ -5,17 +5,21 @@
 +-------------------+----------------------------------------------------------+
 | **Title**         | libpnmio (I/O PNM library)                               |
 +-------------------+----------------------------------------------------------+
-| **Author**        | Nikolaos Kavvadias 2012, 2013, 2014                      |
+| **Author**        | Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016          |
 +-------------------+----------------------------------------------------------+
 | **Contact**       | nikos@nkavvadias.com                                     |
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
-| **Release Date**  | 28 October 2014                                          |
+| **Release Date**  | 10 March 2016                                            |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.2.5                                                    |
+| **Version**       | 1.2.6                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
++-------------------+----------------------------------------------------------+
+|        **v1.2.6** | 2016-03-10                                               |
+|                   |                                                          |
+|                   | Add sftbyvec.c, related changes.                         |
 +-------------------+----------------------------------------------------------+
 |        **v1.2.5** | 2014-10-28                                               |
 |                   |                                                          |
@@ -153,6 +157,9 @@ The ``libpnmio`` distribution includes the following files:
 | rnwimg.c              | Reads and writes PBM/PGM/PPM/PFM images for          |
 |                       | exercising the ``libpnmio`` API.                     |
 +-----------------------+------------------------------------------------------+
+| sftbyvec.c            | Read an input ASCII PGM image, shift its contents by |
+|                       | a given vector and then writes it back               |
++-----------------------+------------------------------------------------------+
 | /test                 | Test script directory                                |
 +-----------------------+------------------------------------------------------+
 | run-doset.sh          | Bash script for running the Mandelbrot set example.  |
@@ -160,6 +167,8 @@ The ``libpnmio`` distribution includes the following files:
 | run-randimg.sh        | Bash script for running the random image generator.  |
 +-----------------------+------------------------------------------------------+
 | run-rnwimg.sh         | Bash script for running the read-and-write API tests.|
++-----------------------+------------------------------------------------------+
+| run-sftbyvec.sh       | Bash script for running the shift-by-vector tests.   |
 +-----------------------+------------------------------------------------------+
 
 The original sources for the images included in the ``/libpnmio/images`` 
@@ -441,6 +450,7 @@ directory to ``/test`` and run the scripts as follows:
 | ``$ ./run-doset.sh``
 | ``$ ./run-randimg.sh``
 | ``$ ./run-rnwimg.sh``
+| ``$ ./run-sftbyvec.sh``
 
 PBM, PGM and PPM files can be directly visualized by using freeware image 
 viewers such as XnView_, IrfanView_ (non-commercial use only) and Imagine_. The 
@@ -461,15 +471,3 @@ http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview
   (http://sources.redhat.com/cygwin) are suggested, since POSIX emulation 
   environments of sufficient completeness.
 
-
-7. Contact
-==========
-
-You may contact me at:
-
-|  Nikolaos Kavvadias <nikos@nkavvadias.com>
-|  Independent Consultant
-|  http://www.nkavvadias.com
-|  Kornarou 12 Rd,
-|  35100 Lamia, Fthiotis
-|  Greece
