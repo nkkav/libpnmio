@@ -94,7 +94,6 @@ int main(int argc, char **argv)
   int *imgin_data, *imgout_data;
   int i=0;
   int pnm_type=0;
-  char magic[MAXLINE];
 
   // Read input arguments
   if (argc < 3) {
