@@ -385,7 +385,7 @@ void read_pbm_data(FILE *f, int *img_in, int is_ascii)
   int lum_val;
   int k;
   
-  /* Read the rest of the PPM file. */
+  /* Read the rest of the PBM file. */
   while ((c = fgetc(f)) != EOF) {
     ungetc(c, f);
     if (is_ascii == 1) {
@@ -410,7 +410,7 @@ void read_pgm_data(FILE *f, int *img_in, int is_ascii)
   int i=0, c;
   int lum_val;
   
-  /* Read the rest of the PPM file. */
+  /* Read the rest of the PGM file. */
   while ((c = fgetc(f)) != EOF) {
     ungetc(c, f);
     if (is_ascii == 1) {
@@ -457,7 +457,7 @@ void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess)
   int swap = (endianess == 1) ? 0 : 1;
   float r_val, g_val, b_val;
     
-  /* Read the rest of the PPM file. */
+  /* Read the rest of the PFM file. */
   while ((c = fgetc(f)) != EOF) {
     ungetc(c, f);   
     /* Read a possibly byte-swapped float. */
