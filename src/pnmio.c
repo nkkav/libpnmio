@@ -389,7 +389,7 @@ void read_pbm_data(FILE *f, int *img_in, int is_ascii)
   while ((c = fgetc(f)) != EOF) {
     ungetc(c, f);
     if (is_ascii == 1) {
-      fscanf(f, "%d", &lum_val);
+      if (fscanf(f, "%d", &lum_val) != 1) return;
       img_in[i++] = lum_val;
     } else {
       lum_val = fgetc(f);
@@ -414,7 +414,7 @@ void read_pgm_data(FILE *f, int *img_in, int is_ascii)
   while ((c = fgetc(f)) != EOF) {
     ungetc(c, f);
     if (is_ascii == 1) {
-	    fscanf(f, "%d", &lum_val);
+        if (fscanf(f, "%d", &lum_val) != 1) return;
 	  } else {
       lum_val = fgetc(f);
     }        
@@ -435,7 +435,7 @@ void read_ppm_data(FILE *f, int *img_in, int is_ascii)
   while ((c = fgetc(f)) != EOF) {
     ungetc(c, f);
     if (is_ascii == 1) {
-      fscanf(f, "%d %d %d", &r_val, &g_val, &b_val);
+      if (fscanf(f, "%d %d %d", &r_val, &g_val, &b_val) != 3) return;
     } else {
       r_val = fgetc(f);
       g_val = fgetc(f);
