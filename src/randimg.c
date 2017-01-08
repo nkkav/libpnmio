@@ -231,6 +231,11 @@ int main(int argc, char **argv)
     x_dim, y_dim, enable_rgb, (IS_LITTLE_ENDIAN ? -1 : 1));
   }
   
-  free(img_data);
+  if (enable_ppm == 1 || enable_pgm == 1 || enable_pbm == 1) {
+    free(img_data);
+  } else if (enable_pfm == 1) {
+    free(pfm_data);
+  }
+
   return 0;
 }
