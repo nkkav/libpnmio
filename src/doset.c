@@ -156,8 +156,6 @@ int main (int argc, char *argv[])
   /* Store image data to PPM file. */
   write_ppm_file(OutFile, img_data, "doset.ppm", XDIM, YDIM,
     1, 1, 255, 1);
-
-  fclose(OutFile); /* Close data file */
   
   /* Free image data storage. */
   free(img_data);

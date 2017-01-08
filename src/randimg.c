@@ -231,7 +231,6 @@ int main(int argc, char **argv)
     x_dim, y_dim, enable_rgb, (IS_LITTLE_ENDIAN ? -1 : 1));
   }
   
-  fclose(imgout_file);
   free(img_data);
   return 0;
 }
