@@ -351,10 +351,10 @@ ul.auto-toc {
 <td>libpnmio (I/O PNM library)</td>
 </tr>
 <tr><td><strong>Author</strong></td>
-<td>Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016</td>
+<td>Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016, 2017</td>
 </tr>
 <tr><td><strong>Contact</strong></td>
-<td><a class="reference external" href="mailto:nikos&#64;nkavvadias.com">nikos&#64;nkavvadias.com</a></td>
+<td><a class="reference external" href="mailto:nikolaos.kavvadias&#64;gmail.com">nikolaos.kavvadias&#64;gmail.com</a></td>
 </tr>
 <tr><td><strong>Website</strong></td>
 <td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
@@ -444,9 +444,14 @@ convention is collectively used to address <a class="reference external" href="h
 <p>The current version of <tt class="docutils literal">libpnmio</tt> supports the ASCII variation of the
 PNM formats, however, it will be extended in order to support the
 corresponding binary formats.</p>
-<p>The library is accompanied by two test applications, namely <tt class="docutils literal">randimg</tt>
-and <tt class="docutils literal">doset</tt>. <tt class="docutils literal">randimg</tt> produces PBM/PGM/PPM image files filled with
-random data. <tt class="docutils literal">doset</tt> generates a color illustration of the Mandelbrot set.</p>
+<p>The library is accompanied by the following test applications:</p>
+<ul class="simple">
+<li><tt class="docutils literal">randimg</tt>: produces PBM/PGM/PPM image files filled with random data</li>
+<li><tt class="docutils literal">doset</tt>: generates a color illustration of the Mandelbrot set</li>
+<li><tt class="docutils literal">rnwimg</tt>: reads and writes PBM/PGM/PPM/PFM images for testing the library</li>
+<li><tt class="docutils literal">sftbyvec</tt>: reads an input ASCII PGM image, shifts its contents by a
+given vector and then writes it back.</li>
+</ul>
 <p>Since version 1.2.0, support for the Portable Float Map format (<a class="reference external" href="http://netpbm.sourceforge.net/doc/pfm.html">PFM</a>) has been
 added.</p>
 <p>Additional information on the PFM format can be found at the

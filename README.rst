@@ -5,9 +5,9 @@
 +-------------------+----------------------------------------------------------+
 | **Title**         | libpnmio (I/O PNM library)                               |
 +-------------------+----------------------------------------------------------+
-| **Author**        | Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016          |
+| **Author**        | Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016, 2017    |
 +-------------------+----------------------------------------------------------+
-| **Contact**       | nikos@nkavvadias.com                                     |
+| **Contact**       | nikolaos.kavvadias@gmail.com                             |
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
@@ -94,9 +94,13 @@ The current version of ``libpnmio`` supports the ASCII variation of the
 PNM formats, however, it will be extended in order to support the 
 corresponding binary formats. 
 
-The library is accompanied by two test applications, namely ``randimg`` 
-and ``doset``. ``randimg`` produces PBM/PGM/PPM image files filled with 
-random data. ``doset`` generates a color illustration of the Mandelbrot set. 
+The library is accompanied by the following test applications:
+
+- ``randimg``: produces PBM/PGM/PPM image files filled with random data
+- ``doset``: generates a color illustration of the Mandelbrot set
+- ``rnwimg``: reads and writes PBM/PGM/PPM/PFM images for testing the library
+- ``sftbyvec``: reads an input ASCII PGM image, shifts its contents by a 
+  given vector and then writes it back.
 
 Since version 1.2.0, support for the Portable Float Map format (PFM_) has been 
 added. 
