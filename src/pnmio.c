@@ -301,20 +301,11 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  */
 void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess)
 {
-  /* Union definition for extracting s|m|e of a float. */
-  typedef union {
-    float f;
-    struct {
-      unsigned int m : 23; /* mantissa */
-      unsigned int e :  8; /* exponent */
-      unsigned int s :  1; /* sign     */
-    } field;
-  } float_type;
   int flag=0;
   int x_val, y_val;
   unsigned int i;
   int is_rgb=0, is_greyscale=0;
-  float_type aspect_ratio;
+  float aspect_ratio=0;
   char magic[MAXLINE];
   char line[MAXLINE];
   int count=0;
@@ -331,13 +322,13 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
     }
     if (flag == 0) {
       if (count == 0) {
-        count += sscanf(line, "%s %d %d %f", magic, &x_val, &y_val, &aspect_ratio.f); 
+        count += sscanf(line, "%s %d %d %f", magic, &x_val, &y_val, &aspect_ratio); 
       } else if (count == 1) {
-        count += sscanf(line, "%d %d %f", &x_val, &y_val, &aspect_ratio.f);
+        count += sscanf(line, "%d %d %f", &x_val, &y_val, &aspect_ratio);
       } else if (count == 2) {
-        count += sscanf(line, "%d %f", &y_val, &aspect_ratio.f);
+        count += sscanf(line, "%d %f", &y_val, &aspect_ratio);
       } else if (count == 3) {
-        count += sscanf(line, "%f", &aspect_ratio.f);
+        count += sscanf(line, "%f", &aspect_ratio);
       }
     }
     if (count == 4) {
@@ -356,12 +347,12 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
     exit(1);
   }      
 
-  fprintf(stderr, "Info: magic=%s, x_val=%d, y_val=%d, aspect_ratio.f=%f\n",
-    magic, x_val, y_val, aspect_ratio.f);
+  fprintf(stderr, "Info: magic=%s, x_val=%d, y_val=%d, aspect_ratio=%f\n",
+    magic, x_val, y_val, aspect_ratio);
 
   /* FIXME: Aspect ratio different to 1.0 is not yet supported. */
-  if (!floatEqualComparison(aspect_ratio.f, -1.0, 1E-06) &&
-      !floatEqualComparison(aspect_ratio.f, 1.0, 1E-06)) {
+  if (!floatEqualComparison(aspect_ratio, -1.0, 1E-06) &&
+      !floatEqualComparison(aspect_ratio, 1.0, 1E-06)) {
     fprintf(stderr, "Error: Aspect ratio different to -1.0 or +1.0 is unsupported!\n");
     exit(1);
   }
@@ -369,7 +360,7 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
   *img_xdim   = x_val;
   *img_ydim   = y_val;
   *img_type   = is_rgb & ~is_greyscale;
-  if (aspect_ratio.f > 0.0) {
+  if (aspect_ratio > 0.0) {
     *endianess = 1;
   } else {
     *endianess = -1;
