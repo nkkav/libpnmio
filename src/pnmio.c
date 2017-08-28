@@ -1,8 +1,8 @@
 /*
  * File       : pnmio.c                                                          
- * Description: I/O facilities for PBM, PGM, PPM (PNM) ASCII images.
+ * Description: I/O facilities for PBM, PGM, PPM (PNM) binary and ASCII images.
  * Author     : Nikolaos Kavvadias <nikolaos.kavvadias@gmail.com>                
- * Copyright  : (C) Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016
+ * Copyright  : (C) Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016, 2017
  * Website    : http://www.nkavvadias.com                            
  *                                                                          
  * This file is part of libpnmio, and is distributed under the terms of the  

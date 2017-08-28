@@ -3,7 +3,7 @@
  * Description: Read an input PBM, PGM, PPM or PFM image and then write it 
  *              back (for testing purposes aka exercising the API).
  * Author     : Nikolaos Kavvadias <nikolaos.kavvadias@gmail.com>                
- * Copyright  : (C) Nikolaos Kavvadias 2014, 2015, 2016
+ * Copyright  : (C) Nikolaos Kavvadias 2014, 2015, 2016, 2017
  * Website    : http://www.nkavvadias.com                            
  *                                                                          
  * This file is part of libpnmio, and is distributed under the terms of the  
