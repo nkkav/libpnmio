@@ -9,7 +9,7 @@ do
   ../bin/sftbyvec.exe -vx 16 -vy 20 -i ../images/${img}.ascii.pgm -o ${img}.sft.ascii.pgm
 done
 
-if [ "$SECONDS" -eq 1 ]
+if [ $SECONDS -eq 1 ]
 then
   units=second
 else

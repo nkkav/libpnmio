@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Test ASCII PBM (P1)
 for img in "feep" "haus" "letter_j"
@@ -50,7 +50,7 @@ do
   ../bin/rnwimg.exe -i ../images/${img}.pfm -o ${img}.out.pfm
 done
 
-if [ "$SECONDS" -eq 1 ]
+if [ $SECONDS -eq 1 ]
 then
   units=second
 else

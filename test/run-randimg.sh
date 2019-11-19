@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ### TESTS
 #
@@ -34,7 +34,7 @@ do
   done 
 done
 
-if [ "$SECONDS" -eq 1 ]
+if [ $SECONDS -eq 1 ]
 then
   units=second
 else
