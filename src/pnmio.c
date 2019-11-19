@@ -708,7 +708,7 @@ int floatEqualComparison(float A, float B, float maxRelDiff)
   return 0;
 }
 
-/* frand48:
+/* frand:
  * Emulate a floating-point PRNG.
  * Source: http://c-faq.com/lib/rand48.html
  */
