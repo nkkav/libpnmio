@@ -38,12 +38,11 @@ int enable_ascii=1, enable_binary=0;
 int enable_rgb=1, enable_greyscale=0;
 char imgout_file_name[96];
 FILE *imgout_file;
-//
+
 int x_dim=XDIM_DEFAULT, y_dim=YDIM_DEFAULT;
 
 
-/* print_usage:
- * Print usage instructions for the "randimg" program.
+/* Print usage instructions for the "randimg" program.
  */
 static void print_usage()
 {
@@ -68,16 +67,14 @@ static void print_usage()
   printf("* http://www.nkavvadias.com\n\n");
 }
 
-/* main:
- * The main "randimg" routine.
+/* The main "randimg" routine.
  */
 int main(int argc, char **argv)
 {
-  int *img_data;
-  float *pfm_data;
+  int *img_data = NULL;
+  float *pfm_data = NULL;
   int i=0;
   long int x, y, c;
-  float f;
 
   // Read input arguments
   if (argc < 2) {
@@ -163,7 +160,7 @@ int main(int argc, char **argv)
   if (enable_pfm == 1) {
     if (enable_rgb == 1) {
       pfm_data = malloc((3 * x_dim * y_dim) * sizeof(float));
-    } else {
+    } else if (enable_greyscale == 1) {
       pfm_data = malloc((x_dim * y_dim) * sizeof(float));
     }      
   } else if (enable_ppm == 1) {
@@ -198,6 +195,7 @@ int main(int argc, char **argv)
     i = 0;
     for (y = 0; y < y_dim; y++) {
       for (x = 0; x < x_dim; x++) {
+        float f = 0.0;
         if (enable_rgb == 1) {
 //          f = ceil(PFM_SCALE * frand());
           f = PFM_SCALE * frand();

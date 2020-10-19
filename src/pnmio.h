@@ -78,6 +78,5 @@ int   ReadFloat(FILE *fptr, float *f, int swap);
 int   WriteFloat(FILE *fptr, float *f, int swap);
 int   floatEqualComparison(float A, float B, float maxRelDiff);
 float frand(void);
-int   log2ceil(int inpval);
 
 #endif /* PNMIO_H */

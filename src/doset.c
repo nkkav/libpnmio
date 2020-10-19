@@ -70,8 +70,8 @@ int color(int count)
  
 int main (int argc, char *argv[])
 {
-  int y, x, count, totct;
-  float x_coord, y_coord, range, gap, size, a, b, ac, bc, b1;
+  int y, x, count;
+  float x_coord, y_coord, range, gap, size, a, b, ac, b1;
   int aa, bb, pixelval;
   char ct[XDIM+1][2];
   int *img_data, i=0;  
@@ -110,8 +110,8 @@ int main (int argc, char *argv[])
   /* Calculate count value for each pixel (200X200) */
   for (y = 1; y <= YDIM; y++) /* Each row */
   {
-    bc = y_coord - y*gap; 
-    totct = 0;
+    int bc = y_coord - y*gap; 
+    int totct = 0;
     for (x = 1; x <= XDIM; x++) /* Each pixel per row */
     {
       ac = x * gap + x_coord;

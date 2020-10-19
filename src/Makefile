@@ -1,7 +1,7 @@
 CC = gcc
 AR = ar
 RANLIB = ranlib
-CFLAGS = -std=c99 -g -Wall -Wextra -pedantic
+CFLAGS = -std=c99 -O3 -Wall -Wextra -pedantic
 EXE = .exe
 LIBSFX = .a
 
@@ -35,23 +35,22 @@ sftbyvec$(EXE): sftbyvec.o
 	mv sftbyvec$(EXE) ../bin
 
 pnmio.o: pnmio.c pnmio.h
-	$(CC) $(CFLAGS) -c pnmio.c $(INCLUDES)
+	$(CC) $(CFLAGS) -c pnmio.c
 
 randimg.o: randimg.c pnmio.h
-	$(CC) $(CFLAGS) $(INCLUDES) -c randimg.c
+	$(CC) $(CFLAGS) -c randimg.c
 
 doset.o: doset.c pnmio.h
-	$(CC) $(CFLAGS) $(INCLUDES) -c doset.c
+	$(CC) $(CFLAGS) -c doset.c
 
 rnwimg.o: rnwimg.c pnmio.h
-	$(CC) $(CFLAGS) $(INCLUDES) -c rnwimg.c
+	$(CC) $(CFLAGS) -c rnwimg.c
 
 sftbyvec.o: sftbyvec.c pnmio.h
-	$(CC) $(CFLAGS) $(INCLUDES) -c sftbyvec.c
+	$(CC) $(CFLAGS) -c sftbyvec.c
    
 tidy:
 	rm -f *.o
 
 clean:
 	rm -f *.o ../lib/libpnmio$(LIBSFX) ../bin/randimg$(EXE) ../bin/doset$(EXE) ../bin/rnwimg$(EXE) ../bin/sftbyvec$(EXE)
-

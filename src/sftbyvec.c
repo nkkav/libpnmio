@@ -37,13 +37,12 @@ int enable_ascii=1;
 int img_colors=1, img_type;
 char *imgin_file_name, *imgout_file_name;
 FILE *imgin_file, *imgout_file;
-//
+
 int vx_size=0, vy_size=0;
 int x_dim=XDIM_DEFAULT, y_dim=YDIM_DEFAULT;
 
 
-/* sftbyvec:
- * Shift the entire image contents by a (vx, vy) vector.
+/* Shift the entire image contents by a (vx, vy) vector.
  */
 void sftbyvec(int *in_data, int *out_data, int vxval, int vyval)
 {
@@ -67,8 +66,7 @@ void sftbyvec(int *in_data, int *out_data, int vxval, int vyval)
   }
 }
 
-/* print_usage:
- * Print usage instructions for the "sftbyvec" program.
+/* Print usage instructions for the "sftbyvec" program.
  */
 static void print_usage()
 {
@@ -87,8 +85,7 @@ static void print_usage()
   printf("* http://www.nkavvadias.com\n\n");
 }
 
-/* main:
- * The main "sftbyvec" routine.
+/* The main "sftbyvec" routine.
  */
 int main(int argc, char **argv)
 {
@@ -171,18 +168,19 @@ int main(int argc, char **argv)
 
   /* Read the image data. */
   read_pgm_data(imgin_file, imgin_data, enable_ascii);
+  fclose(imgin_file);
+  free(imgin_file_name);
 
   /* Shift-by-vector. */
   sftbyvec(imgin_data, imgout_data, vx_size, vy_size);
+  free(imgin_data);
 
   /* Write the output image file. */
   write_pgm_file(imgout_file, imgout_data, imgout_file_name,
       x_dim, y_dim, 1, 1, img_colors, 16, enable_ascii);
-#if 0
-  free(img_data);
-  free(imgin_file);
-  free(imgin_file_name);
-#endif
+  free(imgout_file_name);
+  free(imgout_data);
+
   return 0;
 }
 

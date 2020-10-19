@@ -52,7 +52,6 @@
  */
 int get_pnm_type(FILE *f)
 {
-  int flag=0;
   int pnm_type=0;
   unsigned int i;
   char magic[MAXLINE];
@@ -60,7 +59,7 @@ int get_pnm_type(FILE *f)
  
   /* Read the PNM/PFM file header. */
   while (fgets(line, MAXLINE, f) != NULL) {
-    flag = 0;
+    int flag = 0;
     for (i = 0; i < strlen(line); i++) {
       if (isgraph(line[i])) {
         if ((line[i] == '#') && (flag == 0)) {
@@ -116,7 +115,6 @@ int get_pnm_type(FILE *f)
  */
 void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
 {
-  int flag=0;
   int x_val, y_val;
   unsigned int i;
   char magic[MAXLINE];
@@ -125,7 +123,7 @@ void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
 
   /* Read the PBM file header. */
   while (fgets(line, MAXLINE, f) != NULL) {
-    flag = 0;
+    int flag = 0;
     for (i = 0; i < strlen(line); i++) {
       if (isgraph(line[i])) {
         if ((line[i] == '#') && (flag == 0)) {
@@ -176,7 +174,6 @@ void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
  */
 void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
 {
-  int flag=0;
   int x_val, y_val, maxcolors_val;
   unsigned int i;
   char magic[MAXLINE];
@@ -185,7 +182,7 @@ void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
 
   /* Read the PGM file header. */
   while (fgets(line, MAXLINE, f) != NULL) {   
-    flag = 0;
+    int flag = 0;
     for (i = 0; i < strlen(line); i++) {
       if (isgraph(line[i]) && (flag == 0)) {
         if ((line[i] == '#') && (flag == 0)) {
@@ -239,7 +236,6 @@ void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  */
 void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
 {
-  int flag=0;
   int x_val, y_val, maxcolors_val;
   unsigned int i;
   char magic[MAXLINE];
@@ -248,7 +244,7 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  
   /* Read the PPM file header. */
   while (fgets(line, MAXLINE, f) != NULL) {
-    flag = 0;
+    int flag = 0;
     for (i = 0; i < strlen(line); i++) {
       if (isgraph(line[i]) && (flag == 0)) {
         if ((line[i] == '#') && (flag == 0)) {
@@ -302,7 +298,6 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  */
 void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess)
 {
-  int flag=0;
   int x_val, y_val;
   unsigned int i;
   int is_rgb=0, is_greyscale=0;
@@ -313,7 +308,7 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
 
   /* Read the PFM file header. */
   while (fgets(line, MAXLINE, f) != NULL) {
-    flag = 0;
+    int flag = 0;
     for (i = 0; i < strlen(line); i++) {
       if (isgraph(line[i]) && (flag == 0)) {
         if ((line[i] == '#') && (flag == 0)) {
@@ -652,14 +647,14 @@ void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,
  */
 int ReadFloat(FILE *fptr, float *f, int swap)
 {
-  unsigned char *cptr, tmp;
+  unsigned char *cptr;
 
   if (fread(f, sizeof(float), 1, fptr) != 1) {
     return (FALSE);
   }   
   if (swap) {
     cptr    = (unsigned char *)f;
-    tmp     = cptr[0];
+    unsigned char tmp = cptr[0];
     cptr[0] = cptr[3];
     cptr[3] = tmp;
     tmp     = cptr[1];
@@ -675,11 +670,11 @@ int ReadFloat(FILE *fptr, float *f, int swap)
  */
 int WriteFloat(FILE *fptr, float *f, int swap)
 {
-  unsigned char *cptr, tmp;
+  unsigned char *cptr;
 
   if (swap) {
     cptr    = (unsigned char*)f;
-    tmp     = cptr[0];
+    unsigned char tmp = cptr[0];
     cptr[0] = cptr[3];
     cptr[3] = tmp;
     tmp     = cptr[1];
@@ -715,32 +710,4 @@ int floatEqualComparison(float A, float B, float maxRelDiff)
 float frand(void)
 {
   return rand() / (RAND_MAX + 1.0);
-}
-
-/* log2ceil:
- * Function to calculate the ceiling of the binary logarithm of a given positive 
- * integer n.
- */
-int log2ceil(int inpval)
-{
-  int max = 1; // exp=0 => max=2^0=1
-  unsigned int logval = 0;
-
-  if (inpval < 0) {
-    fprintf(stderr, "Error: Result of log2 computation is NAN.\n");
-    exit(1);
-  } else if (inpval == 0) {
-    fprintf(stderr, "Error: Result of log2 computation is MINUS_INFINITY.\n");
-    exit(1);
-  } else {
-    // log computation loop
-    while (max < inpval) {
-      // increment exponent
-      logval = logval + 1;
-      //  max = 2^logval
-      max = max * 2;
-    }
-  }
-  // exponent that gives (2^logval) >= inpval
-  return (logval);
 }

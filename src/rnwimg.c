@@ -34,18 +34,16 @@
 #define  MAXLINE         1024
 
 int copied_imgin_file_name=0, copied_imgout_file_name=0;
-int enable_pbm=0, enable_ppm=0, enable_pgm=0, enable_pfm=0;
-int enable_ascii=0, enable_binary=0;
-int enable_rgb=0, enable_greyscale=0;
+int enable_pfm=0;
+int enable_ascii=0;
 int img_colors=1, img_type, endianess;
 char *imgin_file_name, *imgout_file_name;
 FILE *imgin_file, *imgout_file;
-//
+
 int x_dim=XDIM_DEFAULT, y_dim=YDIM_DEFAULT;
 
 
-/* print_usage:
- * Print usage instructions for the "rnwimg" program.
+/* Print usage instructions for the "rnwimg" program.
  */
 static void print_usage()
 {
@@ -62,13 +60,12 @@ static void print_usage()
   printf("* http://www.nkavvadias.com\n\n");
 }
 
-/* main:
- * The main "rnwimg" routine.
+/* The main "rnwimg" routine.
  */
 int main(int argc, char **argv)
 {
-  int *img_data;
-  float *pfm_data;
+  int *img_data = NULL;
+  float *pfm_data = NULL;
   int i=0;
   int pnm_type=0;
 
@@ -193,7 +190,7 @@ int main(int argc, char **argv)
     );
   }
 
-  if (enable_pfm == 1) {
+  if (pnm_type == PFM_RGB || pnm_type == PFM_GREYSCALE) {
     free(pfm_data);
   } else if (pnm_type == PBM_ASCII || pnm_type == PBM_BINARY ||
     pnm_type == PGM_ASCII || pnm_type == PGM_BINARY || 
