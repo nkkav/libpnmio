@@ -6,7 +6,7 @@
 | **Title**         | libpnmio (I/O PNM library)                               |
 +-------------------+----------------------------------------------------------+
 | **Author**        | Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016, 2017,   |
-|                   | 2018, 2019                                               |
+|                   | 2018, 2019, 2020                                         |
 +-------------------+----------------------------------------------------------+
 | **Contact**       | nikolaos.kavvadias@gmail.com                             |
 +-------------------+----------------------------------------------------------+
@@ -475,4 +475,3 @@ http://web.archive.org/web/20060614160328/http://www.debevec.org/FiatLux/hdrview
   For this reason, MinGW (http://www.mingw.org) or Cygwin 
   (http://sources.redhat.com/cygwin) are suggested, since POSIX emulation 
   environments of sufficient completeness.
-
