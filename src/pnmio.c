@@ -609,8 +609,6 @@ void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,
   x_scaled_size = x_size;
   y_scaled_size = y_size;
 
-  /* Write a comment containing the file name. */
-  fprintf(f, "# %s\n", img_out_fname);
   /* Write the magic number string. */
   if (img_type == RGB_TYPE) {
     fprintf(f, "PF\n");
