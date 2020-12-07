@@ -147,6 +147,7 @@ int main(int argc, char **argv)
         exit(1);
       } 
     }
+    free(imgout_file_name);
   }
 
   /* Perform operations. */
@@ -173,19 +174,19 @@ int main(int argc, char **argv)
 
   /* Write the output image file. */
   if ((pnm_type == PBM_ASCII) || (pnm_type == PBM_BINARY)) {
-    write_pbm_file(imgout_file, img_data, imgout_file_name, 
+    write_pbm_file(imgout_file, img_data,
       x_dim, y_dim, 1, 1, 32, enable_ascii
     );
   } else if ((pnm_type == PGM_ASCII) || (pnm_type == PGM_BINARY)) {
-    write_pgm_file(imgout_file, img_data, imgout_file_name,
+    write_pgm_file(imgout_file, img_data,
       x_dim, y_dim, 1, 1, img_colors, 16, enable_ascii
     );
   } else if ((pnm_type == PPM_ASCII) || (pnm_type == PPM_BINARY)) {
-    write_ppm_file(imgout_file, img_data, imgout_file_name,
+    write_ppm_file(imgout_file, img_data,
       x_dim, y_dim, 1, 1, img_colors, enable_ascii
     );
   } else if (enable_pfm == 1) {
-    write_pfm_file(imgout_file, pfm_data, imgout_file_name,
+    write_pfm_file(imgout_file, pfm_data,
       x_dim, y_dim, img_type, endianess
     );
   }

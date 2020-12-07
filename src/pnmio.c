@@ -466,7 +466,7 @@ void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess)
 /* write_pbm_file:
  * Write the contents of a PBM (portable bit map) file.
  */
-void write_pbm_file(FILE *f, int *img_out, char *img_out_fname, 
+void write_pbm_file(FILE *f, int *img_out,
   int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals,
   int is_ascii)
 {
@@ -483,8 +483,6 @@ void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,
     fprintf(f, "P4\n");
 	step = 8;
   }
-  /* Write a comment containing the file name. */
-  fprintf(f, "# %s\n", img_out_fname);
   /* Write the image dimensions. */
   fprintf(f, "%d %d\n", x_scaled_size, y_scaled_size);
   
@@ -512,7 +510,7 @@ void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,
 /* write_pgm_file:
  * Write the contents of a PGM (portable grey map) file.
  */
-void write_pgm_file(FILE *f, int *img_out, char *img_out_fname, 
+void write_pgm_file(FILE *f, int *img_out,
   int x_size, int y_size, int x_scale_val, int y_scale_val, 
   int img_colors, int linevals, int is_ascii)
 {
@@ -526,8 +524,6 @@ void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,
   } else {
     fprintf(f, "P5\n");
   }
-  /* Write a comment containing the file name. */
-  fprintf(f, "# %s\n", img_out_fname);
   /* Write the image dimensions. */
   fprintf(f, "%d %d\n", x_scaled_size, y_scaled_size);
   /* Write the maximum color/grey level allowed. */
@@ -552,7 +548,7 @@ void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,
 /* write_ppm_file:
  * Write the contents of a PPM (portable pix map) file.
  */
-void write_ppm_file(FILE *f, int *img_out, char *img_out_fname, 
+void write_ppm_file(FILE *f, int *img_out,
   int x_size, int y_size, int x_scale_val, int y_scale_val, 
   int img_colors, int is_ascii)
 {
@@ -566,8 +562,6 @@ void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,
   } else {
     fprintf(f, "P6\n");
   }
-  /* Write a comment containing the file name. */
-  fprintf(f, "# %s\n", img_out_fname);
   /* Write the image dimensions. */
   fprintf(f, "%d %d\n", x_scaled_size, y_scaled_size);
   /* Write the maximum color/grey level allowed. */
@@ -598,7 +592,7 @@ void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,
 /* write_pfm_file:
  * Write the contents of a PFM (portable float map) file.
  */
-void write_pfm_file(FILE *f, float *img_out, char *img_out_fname, 
+void write_pfm_file(FILE *f, float *img_out,
   int x_size, int y_size, 
   int img_type, int endianess)
 {

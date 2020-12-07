@@ -365,12 +365,11 @@ little-endian ordering and positive one, big-endian.
 3.10 write_pbm_file
 -------------------
 
-| ``void write_pbm_file(FILE *f, int *img_out, char *img_out_fname,`` 
+| ``void write_pbm_file(FILE *f, int *img_out,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals, int is_ascii);``
 
 Write the contents of a PBM (portable bit map) file.
-Data stored in array ``img_out`` are written to file ``f``. This file is 
-assumed to be already opened under the name ``img_out_fname``. The 
+Data stored in array ``img_out`` are written to file ``f``. The 
 image data represent an image of size ``x_size`` by ``y_size``. x-axis and 
 y-axis scaling factors can be defined by ``x_scale_val`` and ``y_scale_val``.
 ``linevals`` determines the emission of newline characters for easier 
@@ -381,13 +380,12 @@ is.
 3.11 write_pgm_file
 -------------------
 
-| ``void write_pgm_file(FILE *f, int *img_out, char *img_out_fname,`` 
+| ``void write_pgm_file(FILE *f, int *img_out,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors,``
 | ``int linevals, int is_ascii);``
 
 Write the contents of a PGM (portable grey map) file.
-Data stored in array ``img_out`` are written to file ``f``. This file is 
-assumed to be already opened under the name ``img_out_fname``. The 
+Data stored in array ``img_out`` are written to file ``f``. The 
 image data represent an image of size ``x_size`` by ``y_size``. x-axis and 
 y-axis scaling factors can be defined by ``x_scale_val`` and ``y_scale_val``.
 ``img_colors`` determines the levels (0 to levels) for the common color 
@@ -400,12 +398,11 @@ is.
 3.12 write_ppm_file
 -------------------
 
-| ``void write_ppm_file(FILE *f, int *img_out, char *img_out_fname,`` 
+| ``void write_ppm_file(FILE *f, int *img_out,`` 
 | ``int x_size, int y_size, int x_scale_val, int y_scale_val, int img_colors, int is_ascii);``
 
 Write the contents of a PPM (portable pix map) file.
-Data stored in array ``img_out`` are written to file ``f``. This file is 
-assumed to be already opened under the name ``img_out_fname``. The 
+Data stored in array ``img_out`` are written to file ``f``. The 
 image data represent an image of size ``x_size`` by ``y_size``. x-axis and 
 y-axis scaling factors can be defined by ``x_scale_val`` and ``y_scale_val``.
 ``img_colors`` determines the levels (0 to levels) for the common color 
@@ -416,12 +413,11 @@ is.
 3.13 write_pfm_file
 -------------------
 
-| ``void write_pfm_file(FILE *f, float *img_out, char *img_out_fname,`` 
+| ``void write_pfm_file(FILE *f, float *img_out,`` 
 | ``int x_size, int y_size, int img_type, int endianess);``
 
 Write the contents of a PFM (portable float map) file.
-Data stored in array ``img_out`` are written to file ``f``. This file is 
-assumed to be already opened under the name ``img_out_fname``. The 
+Data stored in array ``img_out`` are written to file ``f``. The 
 image data represent an image of size ``x_size`` by ``y_size``. x-axis and 
 y-axis scaling factors can be defined by ``x_scale_val`` and ``y_scale_val``.
 If ``img_type`` is equal to 1, the PFM image encodes RGB (color) information, 

@@ -61,16 +61,16 @@ void read_pbm_data(FILE *f, int *img_in, int is_ascii);
 void read_pgm_data(FILE *f, int *img_in, int is_ascii);
 void read_ppm_data(FILE *f, int *img_in, int is_ascii);
 void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess);
-void write_pbm_file(FILE *f, int *img_out, char *img_out_fname, 
+void write_pbm_file(FILE *f, int *img_out,
        int x_size, int y_size, int x_scale_val, int y_scale_val, int linevals, 
        int is_ascii);
-void write_pgm_file(FILE *f, int *img_out, char *img_out_fname, 
+void write_pgm_file(FILE *f, int *img_out,
        int x_size, int y_size, int x_scale_val, int y_scale_val, 
        int img_colors, int linevals, int is_ascii);
-void write_ppm_file(FILE *f, int *img_out, char *img_out_fname, 
+void write_ppm_file(FILE *f, int *img_out,
        int x_size, int y_size, int x_scale_val, int y_scale_val, 
        int img_colors, int is_ascii);
-void write_pfm_file(FILE *f, float *img_out, char *img_out_fname, 
+void write_pfm_file(FILE *f, float *img_out,
        int x_size, int y_size, int img_type, int endianess);
 
 /* Helper/auxiliary functions. */

@@ -217,16 +217,16 @@ int main(int argc, char **argv)
   } 
   
   if (enable_ppm == 1) {
-    write_ppm_file(imgout_file, img_data, imgout_file_name, 
+    write_ppm_file(imgout_file, img_data,
 	  x_dim, y_dim, 1, 1, 255, enable_ascii);
   } else if (enable_pgm == 1) {
-    write_pgm_file(imgout_file, img_data, imgout_file_name, 
+    write_pgm_file(imgout_file, img_data,
 	  x_dim, y_dim, 1, 1, 255, 16, enable_ascii);
   } else if (enable_pbm == 1) {
-    write_pbm_file(imgout_file, img_data, imgout_file_name, 
+    write_pbm_file(imgout_file, img_data,
 	  x_dim, y_dim, 1, 1, 32, enable_ascii);
   } else if (enable_pfm == 1) {
-    write_pfm_file(imgout_file, pfm_data, imgout_file_name, 
+    write_pfm_file(imgout_file, pfm_data,
     x_dim, y_dim, enable_rgb, (IS_LITTLE_ENDIAN ? -1 : 1));
   }
   

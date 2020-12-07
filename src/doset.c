@@ -154,7 +154,7 @@ int main (int argc, char *argv[])
   } /* End y loop */
   
   /* Store image data to PPM file. */
-  write_ppm_file(OutFile, img_data, "doset.ppm", XDIM, YDIM,
+  write_ppm_file(OutFile, img_data, XDIM, YDIM,
     1, 1, 255, 1);
   
   /* Free image data storage. */

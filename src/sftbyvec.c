@@ -160,6 +160,7 @@ int main(int argc, char **argv)
       fprintf(stderr, "Error: Can't create the specified output file.\n");
       exit(1);
     }
+    free(imgout_file_name);
   }
 
   /* Perform operations. */
@@ -176,9 +177,8 @@ int main(int argc, char **argv)
   free(imgin_data);
 
   /* Write the output image file. */
-  write_pgm_file(imgout_file, imgout_data, imgout_file_name,
+  write_pgm_file(imgout_file, imgout_data,
       x_dim, y_dim, 1, 1, img_colors, 16, enable_ascii);
-  free(imgout_file_name);
   free(imgout_data);
 
   return 0;
