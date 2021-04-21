@@ -68,7 +68,7 @@ int get_pnm_type(FILE *f)
       }
     }
     if (flag == 0) {
-      sscanf(line, "%s", magic);
+      sscanf(line, "%2s", magic);
       break;
     }
   }
@@ -133,7 +133,7 @@ void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
     }
     if (flag == 0) {
       if (count == 0) {
-        count += sscanf(line, "%s %d %d", magic, &x_val, &y_val);
+        count += sscanf(line, "%2s %d %d", magic, &x_val, &y_val);
       } else if (count == 1) {
         count += sscanf(line, "%d %d", &x_val, &y_val);
       } else if (count == 2) {
@@ -192,7 +192,7 @@ void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
     }
     if (flag == 0) {
       if (count == 0) {
-        count += sscanf(line, "%s %d %d %d", magic, &x_val, &y_val, &maxcolors_val); 
+        count += sscanf(line, "%2s %d %d %d", magic, &x_val, &y_val, &maxcolors_val);
       } else if (count == 1) {
         count += sscanf(line, "%d %d %d", &x_val, &y_val, &maxcolors_val);
       } else if (count == 2) {
@@ -254,7 +254,7 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
     }
     if (flag == 0) {
       if (count == 0) {
-        count += sscanf(line, "%s %d %d %d", magic, &x_val, &y_val, &maxcolors_val); 
+        count += sscanf(line, "%2s %d %d %d", magic, &x_val, &y_val, &maxcolors_val);
       } else if (count == 1) {
         count += sscanf(line, "%d %d %d", &x_val, &y_val, &maxcolors_val);
       } else if (count == 2) {
@@ -318,7 +318,7 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
     }
     if (flag == 0) {
       if (count == 0) {
-        count += sscanf(line, "%s %d %d %f", magic, &x_val, &y_val, &aspect_ratio); 
+        count += sscanf(line, "%2s %d %d %f", magic, &x_val, &y_val, &aspect_ratio);
       } else if (count == 1) {
         count += sscanf(line, "%d %d %f", &x_val, &y_val, &aspect_ratio);
       } else if (count == 2) {
