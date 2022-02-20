@@ -374,7 +374,7 @@ ul.auto-toc {
 </tr>
 <tr><td><strong>Author</strong></td>
 <td>Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016, 2017,
-2018, 2019, 2020</td>
+2018, 2019, 2020, 2021, 2022</td>
 </tr>
 <tr><td><strong>Contact</strong></td>
 <td><a class="reference external" href="mailto:nikolaos.kavvadias&#64;gmail.com">nikolaos.kavvadias&#64;gmail.com</a></td>
@@ -383,13 +383,18 @@ ul.auto-toc {
 <td><a class="reference external" href="http://www.nkavvadias.com">http://www.nkavvadias.com</a></td>
 </tr>
 <tr><td><strong>Release Date</strong></td>
-<td>10 March 2016</td>
+<td>19 February 2022</td>
 </tr>
 <tr><td><strong>Version</strong></td>
-<td>1.2.6</td>
+<td>1.2.7</td>
 </tr>
 <tr><td><strong>Rev. history</strong></td>
 <td>&nbsp;</td>
+</tr>
+<tr><td><strong>v1.2.7</strong></td>
+<td><p class="first">2022-02-19</p>
+<p class="last">Fixed issues 5 and 6</p>
+</td>
 </tr>
 <tr><td><strong>v1.2.6</strong></td>
 <td><p class="first">2016-03-10</p>
@@ -622,7 +627,7 @@ its type. Valid types for a PNM image are as follows:</p>
 <div class="section" id="read-pbm-header">
 <h2>3.2 read_pbm_header</h2>
 <div class="line-block">
-<div class="line"><tt class="docutils literal">void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);</tt></div>
+<div class="line"><tt class="docutils literal">int read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);</tt></div>
 </div>
 <p>Read the header contents of a PBM (portable bit map) file. A PBM image file
 follows the format:</p>
@@ -639,11 +644,12 @@ take only the 0 and 1 values.
 <tt class="docutils literal">img_xdim</tt> and <tt class="docutils literal">img_ydim</tt> correspond to <tt class="docutils literal">X</tt> and <tt class="docutils literal">Y</tt>, respectively.
 If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PBM file is assumed; otherwise a binary PBM file
 is.</p>
+<p>Returns the number of bytes that need be allocated to hold the image data.</p>
 </div>
 <div class="section" id="read-pgm-header">
 <h2>3.3 read_pgm_header</h2>
 <div class="line-block">
-<div class="line"><tt class="docutils literal">read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
+<div class="line"><tt class="docutils literal">int read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
 </div>
 <p>Read the header contents of a PGM (portable grey map) file. A PGM image file
 follows the format:</p>
@@ -661,11 +667,12 @@ Comment lines start with <tt class="docutils literal">#</tt>.
 and <tt class="docutils literal">levels</tt>, respectively.
 If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PGM file is assumed; otherwise a binary PGM file
 is.</p>
+<p>Returns the number of bytes that need be allocated to hold the image data.</p>
 </div>
 <div class="section" id="read-ppm-header">
 <h2>3.4 read_ppm_header</h2>
 <div class="line-block">
-<div class="line"><tt class="docutils literal">void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
+<div class="line"><tt class="docutils literal">int read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);</tt></div>
 </div>
 <p>Read the header contents of a PPM (portable pix map) file. A PPM image file
 follows the format:</p>
@@ -684,11 +691,12 @@ and <tt class="docutils literal">levels</tt>, respectively. Each color component
 value from 0 to levels.
 If <tt class="docutils literal">is_ascii</tt> is 1, an ASCII PPM file is assumed; otherwise a binary PPM file
 is.</p>
+<p>Returns the number of bytes that need be allocated to hold the image data.</p>
 </div>
 <div class="section" id="read-pfm-header">
 <h2>3.5 read_pfm_header</h2>
 <div class="line-block">
-<div class="line"><tt class="docutils literal">void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);</tt></div>
+<div class="line"><tt class="docutils literal">int read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);</tt></div>
 </div>
 <p>Read the header contents of a PFM (portable float map) file. A PFM image file
 follows the format:</p>
@@ -709,6 +717,7 @@ otherwise if it is equal to 0, it stores greyscale information.
 If <tt class="docutils literal">endianess</tt> is negative (-1), the binary data are encoded in little-endian
 ordering, otherwise if <tt class="docutils literal">endianess</tt> is positive (+1), the data follow
 big-endian ordering.</p>
+<p>Returns the number of bytes that need be allocated to hold the image data.</p>
 </div>
 <div class="section" id="read-pbm-data">
 <h2>3.6 read_pbm_data</h2>

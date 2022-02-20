@@ -6,17 +6,21 @@
 | **Title**         | libpnmio (I/O PNM library)                               |
 +-------------------+----------------------------------------------------------+
 | **Author**        | Nikolaos Kavvadias 2012, 2013, 2014, 2015, 2016, 2017,   |
-|                   | 2018, 2019, 2020                                         |
+|                   | 2018, 2019, 2020, 2021, 2022                             |
 +-------------------+----------------------------------------------------------+
 | **Contact**       | nikolaos.kavvadias@gmail.com                             |
 +-------------------+----------------------------------------------------------+
 | **Website**       | http://www.nkavvadias.com                                |
 +-------------------+----------------------------------------------------------+
-| **Release Date**  | 10 March 2016                                            |
+| **Release Date**  | 19 February 2022                                         |
 +-------------------+----------------------------------------------------------+
-| **Version**       | 1.2.6                                                    |
+| **Version**       | 1.2.7                                                    |
 +-------------------+----------------------------------------------------------+
 | **Rev. history**  |                                                          |
++-------------------+----------------------------------------------------------+
+|        **v1.2.7** | 2022-02-19                                               |
+|                   |                                                          |
+|                   | Fixed issues 5 and 6                                     |
 +-------------------+----------------------------------------------------------+
 |        **v1.2.6** | 2016-03-10                                               |
 |                   |                                                          |
@@ -225,7 +229,7 @@ The result (pnm_type) is returned.
 3.2 read_pbm_header
 -------------------
 
-| ``void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);``
+| ``int read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int is_ascii);``
 
 Read the header contents of a PBM (portable bit map) file. A PBM image file 
 follows the format:
@@ -245,10 +249,12 @@ take only the 0 and 1 values.
 If ``is_ascii`` is 1, an ASCII PBM file is assumed; otherwise a binary PBM file 
 is.
 
+Returns the number of bytes that need be allocated to hold the image data.
+
 3.3 read_pgm_header
 -------------------
 
-| ``read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
+| ``int read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
 Read the header contents of a PGM (portable grey map) file. A PGM image file 
 follows the format:
@@ -269,10 +275,12 @@ and ``levels``, respectively.
 If ``is_ascii`` is 1, an ASCII PGM file is assumed; otherwise a binary PGM file 
 is.
 
+Returns the number of bytes that need be allocated to hold the image data.
+
 3.4 read_ppm_header
 -------------------
 
-| ``void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
+| ``int read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int is_ascii);``
 
 Read the header contents of a PPM (portable pix map) file. A PPM image file 
 follows the format:
@@ -294,10 +302,12 @@ value from 0 to levels.
 If ``is_ascii`` is 1, an ASCII PPM file is assumed; otherwise a binary PPM file 
 is.
 
+Returns the number of bytes that need be allocated to hold the image data.
+
 3.5 read_pfm_header
 -------------------
 
-| ``void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);``
+| ``int read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess);``
 
 Read the header contents of a PFM (portable float map) file. A PFM image file 
 follows the format:
@@ -320,6 +330,8 @@ otherwise if it is equal to 0, it stores greyscale information.
 If ``endianess`` is negative (-1), the binary data are encoded in little-endian 
 ordering, otherwise if ``endianess`` is positive (+1), the data follow 
 big-endian ordering.
+
+Returns the number of bytes that need be allocated to hold the image data.
 
 3.6 read_pbm_data
 -----------------
