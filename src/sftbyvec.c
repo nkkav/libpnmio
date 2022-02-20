@@ -146,8 +146,9 @@ int main(int argc, char **argv)
   rewind(imgin_file);
 
   /* Read the image file header (the input file has been rewinded). */
+  int num_bytes = 0;
   if (pnm_type == PGM_ASCII) {
-    read_pgm_header(imgin_file, &x_dim, &y_dim, &img_colors, &enable_ascii);
+    num_bytes = read_pgm_header(imgin_file, &x_dim, &y_dim, &img_colors, &enable_ascii);
   } else {    
     fprintf(stderr, "Error: Only ASCII PGM format is supported. Exiting...\n");
     exit(1);
@@ -163,8 +164,8 @@ int main(int argc, char **argv)
   }
 
   /* Perform operations. */
-  imgin_data  = malloc((x_dim * y_dim) * sizeof(int));
-  imgout_data = malloc((x_dim * y_dim) * sizeof(int));
+  imgin_data  = malloc(num_bytes);
+  imgout_data = malloc(num_bytes);
 
   /* Read the image data. */
   read_pgm_data(imgin_file, imgin_data, enable_ascii);

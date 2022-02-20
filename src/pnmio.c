@@ -103,6 +103,7 @@ int get_pnm_type(FILE *f)
 
 /* read_pbm_header:
  * Read the header contents of a PBM (Portable Binary Map) file.
+ * Returns the number of bytes that need be allocated for the image data.
  * An ASCII PBM image file follows the format:
  * P1
  * <X> <Y>
@@ -112,7 +113,7 @@ int get_pnm_type(FILE *f)
  * NOTE1: Comment lines start with '#'.
  * NOTE2: < > denote integer values (in decimal).
  */
-void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
+int read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
 {
   int x_val, y_val;
   unsigned int i;
@@ -157,10 +158,13 @@ void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
     magic, x_val, y_val);
   *img_xdim   = x_val;
   *img_ydim   = y_val;
+
+  return *img_xdim * *img_ydim * sizeof(int);
 }
 
 /* read_pgm_header:
  * Read the header contents of a PGM (Portable Grey[scale] Map) file.
+ * Returns the number of bytes that need be allocated for the image data.
  * An ASCII PGM image file follows the format:
  * P2
  * <X> <Y> 
@@ -171,7 +175,7 @@ void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii)
  * NOTE1: Comment lines start with '#'.
  * NOTE2: < > denote integer values (in decimal).
  */
-void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
+int read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
 {
   int x_val, y_val, maxcolors_val;
   unsigned int i;
@@ -219,10 +223,13 @@ void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
   *img_xdim   = x_val;
   *img_ydim   = y_val;
   *img_colors = maxcolors_val;
+
+  return *img_xdim * *img_ydim * sizeof(int);
 }
 
 /* read_ppm_header:
  * Read the header contents of a PPM (Portable Pix[el] Map) file.
+ * Returns the number of bytes that need be allocated for the image data.
  * An ASCII PPM image file follows the format:
  * P3
  * <X> <Y> 
@@ -233,7 +240,7 @@ void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  * NOTE1: Comment lines start with '#'.
  # NOTE2: < > denote integer values (in decimal).
  */
-void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
+int read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int *is_ascii)
 {
   int x_val, y_val, maxcolors_val;
   unsigned int i;
@@ -281,10 +288,13 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
   *img_xdim   = x_val;
   *img_ydim   = y_val;
   *img_colors = maxcolors_val;
+
+  return 3 * *img_xdim * *img_ydim * sizeof(int);
 }
 
 /* read_pfm_header:
  * Read the header contents of a PFM (portable float map) file.
+ * Returns the number of bytes that need be allocated for the image data.
  * A PFM image file follows the format:
  * [PF|Pf]
  * <X> <Y> 
@@ -295,7 +305,7 @@ void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, int
  # NOTE3: ( ) denote floating-point values (in decimal).
  # NOTE4: { } denote floating-point values (coded in binary).
  */
-void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess)
+int read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *endianess)
 {
   int x_val, y_val;
   unsigned int i;
@@ -304,6 +314,7 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
   char magic[MAXLINE];
   char line[MAXLINE];
   int count=0;
+  int num_bytes=0;
 
   /* Read the PFM file header. */
   while (fgets(line, MAXLINE, f) != NULL) {
@@ -360,6 +371,12 @@ void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, int *
   } else {
     *endianess = -1;
   }
+
+  num_bytes = *img_xdim * *img_ydim * sizeof(float);
+  if (is_rgb) {
+    num_bytes *= 3;
+  }
+  return num_bytes;
 }
 
 /* read_pbm_data:

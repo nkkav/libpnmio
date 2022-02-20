@@ -49,12 +49,12 @@
 
 /* PNM/PFM API. */
 int  get_pnm_type(FILE *f);
-void read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii);
-void read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, 
+int read_pbm_header(FILE *f, int *img_xdim, int *img_ydim, int *is_ascii);
+int read_pgm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors,
        int *is_ascii);
-void read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors, 
+int read_ppm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_colors,
        int *is_ascii);
-void read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type, 
+int read_pfm_header(FILE *f, int *img_xdim, int *img_ydim, int *img_type,
        int *endianess);
 void read_pbm_data(FILE *f, int *img_in, int is_ascii);
 void read_pgm_data(FILE *f, int *img_in, int is_ascii);

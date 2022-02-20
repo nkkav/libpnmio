@@ -119,14 +119,15 @@ int main(int argc, char **argv)
   rewind(imgin_file);
 
   /* Read the image file header (the input file has been rewinded). */
+  int num_bytes = 0;
   if ((pnm_type == PBM_ASCII) || (pnm_type == PBM_BINARY)) {
-    read_pbm_header(imgin_file, &x_dim, &y_dim, &enable_ascii);
+    num_bytes = read_pbm_header(imgin_file, &x_dim, &y_dim, &enable_ascii);
   } else if ((pnm_type == PGM_ASCII) || (pnm_type == PGM_BINARY)) {
-    read_pgm_header(imgin_file, &x_dim, &y_dim, &img_colors, &enable_ascii);
+    num_bytes = read_pgm_header(imgin_file, &x_dim, &y_dim, &img_colors, &enable_ascii);
   } else if ((pnm_type == PPM_ASCII) || (pnm_type == PPM_BINARY)) {
-    read_ppm_header(imgin_file, &x_dim, &y_dim, &img_colors, &enable_ascii);
+    num_bytes = read_ppm_header(imgin_file, &x_dim, &y_dim, &img_colors, &enable_ascii);
   } else if ((pnm_type == PFM_RGB) || (pnm_type == PFM_GREYSCALE)) {
-    read_pfm_header(imgin_file, &x_dim, &y_dim, &img_type, &endianess);    
+    num_bytes = read_pfm_header(imgin_file, &x_dim, &y_dim, &img_type, &endianess);
     enable_pfm = 1;
   } else {    
     fprintf(stderr, "Error: Unknown PNM/PFM image format. Exiting...\n");
@@ -150,14 +151,10 @@ int main(int argc, char **argv)
   }
 
   /* Perform operations. */
-  if (pnm_type == PFM_RGB) {
-    pfm_data = malloc((3 * x_dim * y_dim) * sizeof(float));
-  } else if (pnm_type == PFM_GREYSCALE) {
-    pfm_data = malloc((x_dim * y_dim) * sizeof(float));      
-  } else if ((pnm_type == PPM_ASCII) || (pnm_type == PPM_BINARY)) {
-    img_data = malloc((3 * x_dim * y_dim) * sizeof(int));
+  if (pnm_type == PFM_RGB || pnm_type == PFM_GREYSCALE) {
+    pfm_data = malloc(num_bytes);
   } else {
-    img_data = malloc((x_dim * y_dim) * sizeof(int));
+    img_data = malloc(num_bytes);
   }
 
   /* Read the image data. */
