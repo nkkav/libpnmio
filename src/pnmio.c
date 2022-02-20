@@ -386,7 +386,6 @@ void read_pbm_data(FILE *f, int *img_in, int is_ascii)
       }        
     }
   } 
-  fclose(f);
 }
 
 /* read_pgm_data:
@@ -407,7 +406,6 @@ void read_pgm_data(FILE *f, int *img_in, int is_ascii)
     }        
     img_in[i++] = lum_val;
   } 
-  fclose(f);
 }
 
 /* read_ppm_data:
@@ -432,7 +430,6 @@ void read_ppm_data(FILE *f, int *img_in, int is_ascii)
     img_in[i++] = g_val;
     img_in[i++] = b_val;
   }
-  fclose(f);
 }
 
 /* read_pfm_data:
@@ -460,7 +457,6 @@ void read_pfm_data(FILE *f, float *img_in, int img_type, int endianess)
       img_in[i++] = g_val;
     }
   }
-  fclose(f);
 }
 
 /* write_pbm_file:
@@ -504,7 +500,6 @@ void write_pbm_file(FILE *f, int *img_out,
       }
     }
   }   
-  fclose(f);
 }
 
 /* write_pgm_file:
@@ -542,7 +537,6 @@ void write_pgm_file(FILE *f, int *img_out,
       }
     }
   } 
-  fclose(f);
 }
 
 /* write_ppm_file:
@@ -586,7 +580,6 @@ void write_ppm_file(FILE *f, int *img_out,
       }
     }
   }  
-  fclose(f);
 }
 
 /* write_pfm_file:
@@ -629,7 +622,6 @@ void write_pfm_file(FILE *f, float *img_out,
       }
     }
   }  
-  fclose(f);
 }
 
 /* ReadFloat:

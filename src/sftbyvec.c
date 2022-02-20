@@ -179,6 +179,7 @@ int main(int argc, char **argv)
   /* Write the output image file. */
   write_pgm_file(imgout_file, imgout_data,
       x_dim, y_dim, 1, 1, img_colors, 16, enable_ascii);
+  fclose(imgout_file);
   free(imgout_data);
 
   return 0;

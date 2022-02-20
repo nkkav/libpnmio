@@ -171,6 +171,8 @@ int main(int argc, char **argv)
   } else if (enable_pfm == 1) {
     read_pfm_data(imgin_file, pfm_data, img_type, endianess);    
   }
+  fclose(imgin_file);
+  free(imgin_file_name);
 
   /* Write the output image file. */
   if ((pnm_type == PBM_ASCII) || (pnm_type == PBM_BINARY)) {
@@ -190,6 +192,7 @@ int main(int argc, char **argv)
       x_dim, y_dim, img_type, endianess
     );
   }
+  fclose(imgout_file);
 
   if (pnm_type == PFM_RGB || pnm_type == PFM_GREYSCALE) {
     free(pfm_data);
@@ -198,7 +201,6 @@ int main(int argc, char **argv)
     pnm_type == PPM_ASCII || pnm_type == PPM_BINARY) {
     free(img_data);
   }
-  free(imgin_file_name);
 
   return 0;
 }

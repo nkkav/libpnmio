@@ -229,6 +229,7 @@ int main(int argc, char **argv)
     write_pfm_file(imgout_file, pfm_data,
     x_dim, y_dim, enable_rgb, (IS_LITTLE_ENDIAN ? -1 : 1));
   }
+  fclose(imgout_file);
   
   if (enable_ppm == 1 || enable_pgm == 1 || enable_pbm == 1) {
     free(img_data);
